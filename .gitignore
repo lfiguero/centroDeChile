@@ -1,0 +1,8 @@
+# Archivos que instruimos a Git que ignore
+*.dvi
+*.log
+*.aux
+*.toc
+*.bbl
+*.blg
+README.pdf
