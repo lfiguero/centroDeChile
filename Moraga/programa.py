@@ -97,7 +97,7 @@ SUBCHILE=0
 comunasNaN = [321, 324, 331, 332, 345, 335]
 comunasFueraDeRango = [37, 8, 9, 11, 14, 19, 22, 23, 28, 30, 31, 37, 142, 229, 280, 294, 325, 329, 330, 276, 281]
 for i, comuna in enumerate(sf.shapeRecords()):
-    #COMUNAS
+    # COMUNAS
     if i not in comunasNaN and i not in comunasFueraDeRango:
         nombre = comuna.record[2]
         cod = comuna.record[6]
@@ -122,11 +122,11 @@ for i, comuna in enumerate(sf.shapeRecords()):
                     print("ALARMA1")
                     print([i, j])
                     print("----------------------------------")
-             #TRIANGULARIZACION
+            # TRIANGULARIZACIÓN
             TRI=triangle.delaunay(p)
             T=numpy.empty(len(TRI)-1)
             for k in range(0,len(TRI)-1):
-                #CALCULO DE INTEGRAL POR MEDIO DE SEPARACION DE PUNTOS EN TRIANGULOS
+                # CÁLCULO DE INTEGRAL POR MEDIO DE SEPARACION DE PUNTOS EN TRIANGULOS
                 x1=p[TRI[k,0],0]
                 y1=p[TRI[k,0],1]
                 x2=p[TRI[k,1],0]
@@ -152,18 +152,12 @@ for i, comuna in enumerate(sf.shapeRecords()):
                 SUBCOMUNA=SUBCOMUNA+AAA+AAA2
                 ICCx=ICCx+pcx+pcx2
                 ICCy=ICCy+pcy+pcy2
-        #RESULTADOS
+        # RESULTADOS
         SumA=SUBCOMUNA*H[i]+SumA
         Icomunax=ICCx*H[i]
         Icomunay=ICCy*H[i]
         ICx=ICx+Icomunax
         ICy=ICy+Icomunay
-#PARA OBTENER EL RESULTADO
+# PARA OBTENER EL RESULTADO
 # \theta=ICx/SumA
 # \Phi  =ICy/SumA
-
-
-
-
-
-
