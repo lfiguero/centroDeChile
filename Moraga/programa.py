@@ -33,13 +33,13 @@ def I4(a,b,c,d):
     b=b
     c=c
     I=((b-a)/6)*(I3(a,c,d,a)+4*I3((a+b)/2,c,d,a)+I3(b,c,d,a))
-    return I 
+    return I
     ########################
 def I1(x,c,d,a):
     R=6371000
     h=((x-c)/6)*((R*R)*numpy.cos(c)*(numpy.cos(c)*numpy.cos(x)+numpy.cos(c)*numpy.sin(x)-numpy.sin(c))+4*((R*R)*numpy.cos((c+(x-a)*d+c)/2)*(numpy.cos((c+(x-a)*d+c)/2)*numpy.cos(x)+numpy.cos((c+(x-a)*d+c)/2)*numpy.sin(x)-numpy.sin((c+(x-a)*d+c)/2)))+((R*R)*numpy.cos((x-a)*d+c)*(numpy.cos((x-a)*d+c)*numpy.cos(x)+numpy.cos((x-a)*d+c)*numpy.sin(x)-numpy.sin((x-a)*d+c))))
     return h
-    
+
 def I2(a,b,c,d):
     a=a
     b=b
@@ -79,8 +79,8 @@ def IP(a,b,c,d):
 def IP2(a,b,c,d):
     R=6371000
     I=((b-a)/6)*((R*R)*(numpy.sin((c-a)*d+c)-numpy.sin(c))+4*((R*R)*(numpy.sin(((a+b)*0.5-a)*d+c)-numpy.sin(c)))+((R*R)*(numpy.sin((b-a)*d+c)-numpy.sin(c))))
-    return I    
-    
+    return I
+
 # Código principal
 sf = shapefile.Reader("division_comunal")
 cod=['']*364
@@ -104,7 +104,7 @@ for i, comuna in enumerate(sf.shapeRecords()):
         inicioPartes = comuna.shape.parts
         puntos = numpy.array(comuna.shape.points)
         psp = separarPartes(puntos, inicioPartes)
-        # Puntos separados por parte   
+        # Puntos separados por parte
         Acomuna=0
         ICCx=0
         ICCy=0
@@ -114,17 +114,17 @@ for i, comuna in enumerate(sf.shapeRecords()):
         for j, p in enumerate(psp):
             for l in range(0,len(p)):
                 if abs(p[l,1])>100000 and abs(p[l,1])< 9999999 and abs(p[l,0])>100000 and abs(p[l,0])< 9999999:
-                    #TRANSFORMACION A UTM                    
-                    [p[l,0],p[l,1]]=utm.to_latlon(abs(p[l,0]),abs(p[l,1]), 19, 'k')              
+                    #TRANSFORMACION A UTM
+                    [p[l,0],p[l,1]]=utm.to_latlon(abs(p[l,0]),abs(p[l,1]), 19, 'k')
                 else:
                     #ALARMA POR SI ALGUNA COMUNA SE SALE DEL RANGO DE UTM
                     print("----------------------------------")
                     print("ALARMA1")
                     print([i, j])
                     print("----------------------------------")
-             #TRIANGULARIZACION                        
-            TRI=triangle.delaunay(p)            
-            T=numpy.empty(len(TRI)-1)                
+             #TRIANGULARIZACION
+            TRI=triangle.delaunay(p)
+            T=numpy.empty(len(TRI)-1)
             for k in range(0,len(TRI)-1):
                 #CALCULO DE INTEGRAL POR MEDIO DE SEPARACION DE PUNTOS EN TRIANGULOS
                 x1=p[TRI[k,0],0]
@@ -142,13 +142,13 @@ for i, comuna in enumerate(sf.shapeRecords()):
                 a2=x2
                 b2=x4
                 c2=y4
-                d2=y3                
+                d2=y3
                 pcx=I4(a,b,c,d)
-                pcy=I2(a,b,c,d)               
+                pcy=I2(a,b,c,d)
                 pcx2=-II4(a2,b2,c2,d2)
-                pcy2=-II2(a2,b2,c2,d2) 
+                pcy2=-II2(a2,b2,c2,d2)
                 AAA=IP(a,b,c,d)
-                AAA2=-IP2(a2,b2,c2,d2)                 
+                AAA2=-IP2(a2,b2,c2,d2)
                 SUBCOMUNA=SUBCOMUNA+AAA+AAA2
                 ICCx=ICCx+pcx+pcx2
                 ICCy=ICCy+pcy+pcy2
