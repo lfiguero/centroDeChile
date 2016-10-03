@@ -1,7 +1,6 @@
-Para usar cualquiera de los dos programas:
+Para usar programa.py:
 ------------------------------------------------------------------------------
-1) abrir python 3.5
-2) Copiar y pegar la variable H que está en H.tex
-Esta variable tiene  los pesos de cada comuna ordenados segun division_comunal.
-3)Ejecutar el programa 
+1) Abrir python 3.5.
+2) Copiar y pegar la variable H que está en H.txt. Esta variable tiene  los pesos de cada comuna ordenados segun division_comunal.
+3) Ejecutar el programa.
 ------------------------------------------------------------------------------

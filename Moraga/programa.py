@@ -1,14 +1,14 @@
 # coding: utf-8
-#PREAMBULO
+
+# PREÁMBULO
 import shapefile
 import numpy
 import matplotlib.pyplot as plt
 import triangle
 import os
 import utm
-#CAMBIAR EL DIRECTORIO
-#os.chdir("C:\\Users\\Sebastián\\Documents\\UNIVERSIDAD\\8vo smestre (4to)\\Taller II\\Poryecto uno\\DATOS\\division_comunal")
-#FUNCION QUE SEPARA PARTES DEL ARCHIVO SHP
+
+# FUNCIÓN QUE SEPARA PARTES DEL ARCHIVO SHP
 def separarPartes(puntos, inicioPartes):
     """ puntos es un arreglo de numpy; inicioPartes una lista de primer índice
     de cada parte """
@@ -21,8 +21,8 @@ def separarPartes(puntos, inicioPartes):
             puntos_parte_k = puntos[inicioPartes[k]:, :]
         salida.append(puntos_parte_k)
     return salida
-#FUNCIONES PARA INTEGRAR POR REGLA DE SIMPSON ANIDADA
-    
+
+# FUNCIONES PARA INTEGRAR POR REGLA DE SIMPSON ANIDADA
 def I3(x,c,d,a):
     x=x
     R=6371000
@@ -33,13 +33,13 @@ def I4(a,b,c,d):
     b=b
     c=c
     I=((b-a)/6)*(I3(a,c,d,a)+4*I3((a+b)/2,c,d,a)+I3(b,c,d,a))
-    return I 
+    return I
     ########################
 def I1(x,c,d,a):
     R=6371000
     h=((x-c)/6)*((R*R)*numpy.cos(c)*(numpy.cos(c)*numpy.cos(x)+numpy.cos(c)*numpy.sin(x)-numpy.sin(c))+4*((R*R)*numpy.cos((c+(x-a)*d+c)/2)*(numpy.cos((c+(x-a)*d+c)/2)*numpy.cos(x)+numpy.cos((c+(x-a)*d+c)/2)*numpy.sin(x)-numpy.sin((c+(x-a)*d+c)/2)))+((R*R)*numpy.cos((x-a)*d+c)*(numpy.cos((x-a)*d+c)*numpy.cos(x)+numpy.cos((x-a)*d+c)*numpy.sin(x)-numpy.sin((x-a)*d+c))))
     return h
-    
+
 def I2(a,b,c,d):
     a=a
     b=b
@@ -79,8 +79,8 @@ def IP(a,b,c,d):
 def IP2(a,b,c,d):
     R=6371000
     I=((b-a)/6)*((R*R)*(numpy.sin((c-a)*d+c)-numpy.sin(c))+4*((R*R)*(numpy.sin(((a+b)*0.5-a)*d+c)-numpy.sin(c)))+((R*R)*(numpy.sin((b-a)*d+c)-numpy.sin(c))))
-    return I    
-    
+    return I
+
 # Código principal
 sf = shapefile.Reader("division_comunal")
 cod=['']*364
@@ -94,15 +94,17 @@ ICx=0
 ICy=0
 i=0
 SUBCHILE=0
+comunasNaN = [321, 324, 331, 332, 345, 335]
+comunasFueraDeRango = [37, 8, 9, 11, 14, 19, 22, 23, 28, 30, 31, 37, 142, 229, 280, 294, 325, 329, 330, 276, 281]
 for i, comuna in enumerate(sf.shapeRecords()):
-    #COMUNAS
-    if i !=321 and i !=324 and i!=331 and i!=332 and i !=345 and i!=335 and i!=37 and i!=8 and i!=9 and i!=11 and i!=14 and i!=19 and i!=22 and i!=22 and i!=23 and i!=28 and i!=30 and i!=31 and i!=37 and i!=142 and i!=229 and i!=280 and i!=294 and i!=325 and i!=329 and i!=330  and i!=276 and i!=281:    
+    # COMUNAS
+    if i not in comunasNaN and i not in comunasFueraDeRango:
         nombre = comuna.record[2]
         cod = comuna.record[6]
         inicioPartes = comuna.shape.parts
         puntos = numpy.array(comuna.shape.points)
         psp = separarPartes(puntos, inicioPartes)
-        # Puntos separados por parte   
+        # Puntos separados por parte
         Acomuna=0
         ICCx=0
         ICCy=0
@@ -112,19 +114,19 @@ for i, comuna in enumerate(sf.shapeRecords()):
         for j, p in enumerate(psp):
             for l in range(0,len(p)):
                 if abs(p[l,1])>100000 and abs(p[l,1])< 9999999 and abs(p[l,0])>100000 and abs(p[l,0])< 9999999:
-                    #TRANSFORMACION A UTM                    
-                    [p[l,0],p[l,1]]=utm.to_latlon(abs(p[l,0]),abs(p[l,1]), 19, 'k')              
+                    #TRANSFORMACION A UTM
+                    [p[l,0],p[l,1]]=utm.to_latlon(abs(p[l,0]),abs(p[l,1]), 19, 'k')
                 else:
                     #ALARMA POR SI ALGUNA COMUNA SE SALE DEL RANGO DE UTM
                     print("----------------------------------")
                     print("ALARMA1")
                     print([i, j])
                     print("----------------------------------")
-             #TRIANGULARIZACION                        
-            TRI=triangle.delaunay(p)            
-            T=numpy.empty(len(TRI)-1)                
+            # TRIANGULARIZACIÓN
+            TRI=triangle.delaunay(p)
+            T=numpy.empty(len(TRI)-1)
             for k in range(0,len(TRI)-1):
-                #CALCULO DE INTEGRAL POR MEDIO DE SEPARACION DE PUNTOS EN TRIANGULOS
+                # CÁLCULO DE INTEGRAL POR MEDIO DE SEPARACION DE PUNTOS EN TRIANGULOS
                 x1=p[TRI[k,0],0]
                 y1=p[TRI[k,0],1]
                 x2=p[TRI[k,1],0]
@@ -140,28 +142,22 @@ for i, comuna in enumerate(sf.shapeRecords()):
                 a2=x2
                 b2=x4
                 c2=y4
-                d2=y3                
+                d2=y3
                 pcx=I4(a,b,c,d)
-                pcy=I2(a,b,c,d)               
+                pcy=I2(a,b,c,d)
                 pcx2=-II4(a2,b2,c2,d2)
-                pcy2=-II2(a2,b2,c2,d2) 
+                pcy2=-II2(a2,b2,c2,d2)
                 AAA=IP(a,b,c,d)
-                AAA2=-IP2(a2,b2,c2,d2)                 
+                AAA2=-IP2(a2,b2,c2,d2)
                 SUBCOMUNA=SUBCOMUNA+AAA+AAA2
                 ICCx=ICCx+pcx+pcx2
                 ICCy=ICCy+pcy+pcy2
-        #RESULTADOS
+        # RESULTADOS
         SumA=SUBCOMUNA*H[i]+SumA
         Icomunax=ICCx*H[i]
         Icomunay=ICCy*H[i]
         ICx=ICx+Icomunax
         ICy=ICy+Icomunay
-#PARA OBTENER EL RESULTADO
+# PARA OBTENER EL RESULTADO
 # \theta=ICx/SumA
 # \Phi  =ICy/SumA
-
-
-
-
-
-
