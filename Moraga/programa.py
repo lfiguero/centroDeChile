@@ -94,9 +94,11 @@ ICx=0
 ICy=0
 i=0
 SUBCHILE=0
+comunasNaN = [321, 324, 331, 332, 345, 335]
+comunasFueraDeRango = [37, 8, 9, 11, 14, 19, 22, 23, 28, 30, 31, 37, 142, 229, 280, 294, 325, 329, 330, 276, 281]
 for i, comuna in enumerate(sf.shapeRecords()):
     #COMUNAS
-    if i !=321 and i !=324 and i!=331 and i!=332 and i !=345 and i!=335 and i!=37 and i!=8 and i!=9 and i!=11 and i!=14 and i!=19 and i!=22 and i!=22 and i!=23 and i!=28 and i!=30 and i!=31 and i!=37 and i!=142 and i!=229 and i!=280 and i!=294 and i!=325 and i!=329 and i!=330  and i!=276 and i!=281:    
+    if i not in comunasNaN and i not in comunasFueraDeRango:
         nombre = comuna.record[2]
         cod = comuna.record[6]
         inicioPartes = comuna.shape.parts
