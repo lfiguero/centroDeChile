@@ -1,14 +1,14 @@
 # coding: utf-8
-#PREAMBULO
+
+# PREÁMBULO
 import shapefile
 import numpy
 import matplotlib.pyplot as plt
 import triangle
 import os
 import utm
-#CAMBIAR EL DIRECTORIO
-#os.chdir("C:\\Users\\Sebastián\\Documents\\UNIVERSIDAD\\8vo smestre (4to)\\Taller II\\Poryecto uno\\DATOS\\division_comunal")
-#FUNCION QUE SEPARA PARTES DEL ARCHIVO SHP
+
+# FUNCIÓN QUE SEPARA PARTES DEL ARCHIVO SHP
 def separarPartes(puntos, inicioPartes):
     """ puntos es un arreglo de numpy; inicioPartes una lista de primer índice
     de cada parte """
@@ -21,8 +21,8 @@ def separarPartes(puntos, inicioPartes):
             puntos_parte_k = puntos[inicioPartes[k]:, :]
         salida.append(puntos_parte_k)
     return salida
-#FUNCIONES PARA INTEGRAR POR REGLA DE SIMPSON ANIDADA
-    
+
+# FUNCIONES PARA INTEGRAR POR REGLA DE SIMPSON ANIDADA
 def I3(x,c,d,a):
     x=x
     R=6371000
