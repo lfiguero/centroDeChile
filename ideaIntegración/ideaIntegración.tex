@@ -1,0 +1,101 @@
+\documentclass[reqno]{amsart}
+\usepackage[spanish]{babel} % Para que algunas cosas estén en español
+\usepackage[utf8]{inputenc} % Para hacer que LaTeX acepte tildes y eñes en el código
+\usepackage[T1]{fontenc}
+\usepackage{enumitem} % Para que el ambiente enumerate admita ciertos argumentos opcionales
+\usepackage[symbol]{footmisc}
+\usepackage{srcltx}
+
+\newcommand{\dd}[1][y]{\if#1y\,\fi{\mathrm d}} % Differential
+\newcommand{\norm}[2][y]{\if#1y\left\fi\lVert#2\if#1y\right\fi\rVert} % Norm
+\newcommand{\abs}[2][y]{\if#1y\left\fi\lvert#2\if#1y\right\fi\rvert} % Absolute value
+
+\begin{document}
+\title{Una idea para calcular ciertas integrales}
+\maketitle
+
+\section{La idea}
+
+Sea $T$ un triángulo de vértices $(\varphi_0, \theta_0)$, $(\varphi_1, \theta_1)$, $(\varphi_2, \theta_2)$ dados en sentido antihorario; esto es,
+%
+\begin{equation}\label{T}
+T = \left\{ \sum_{i=0}^2 t_i (\varphi_i, \theta_i) \mid 0 \leq t_0, t_1, t_2 \leq 1 \ \wedge \ t_0+t_1+t_2=1 \right\}.
+\end{equation}
+%
+
+Deseamos computar la integral\footnote{Omití el radio del planeta Tierra al cuadrado y la densidad de población de la comuna a la que $T$ está asociado para no sobrecargar la notación}
+%
+\begin{equation}\label{I1}
+I_{T,x} := \int_T x(\varphi, \theta) \, \dd S(\varphi, \theta),
+\end{equation}
+%
+donde $x(\varphi,\theta) = \cos(\varphi) \sen(\theta)$ y $\dd S(\varphi, \theta) = \sen(\theta) \dd(\varphi,\theta)$\footnote{Esto corresponde a la integral de la primera coordenada cartesiana sobre la región sobre la superficie de la esfera que sale de aplicar a $T$ la transformación $(\varphi, \theta) \mapsto (\cos(\varphi) \sen(\theta), \sen(\varphi) \sen(\theta))$ (notar que esto implica que la variable $\theta$ corresponde a una colatitud y que los segmentos de la frontera de $T$ no son mapeados a curvas geodésicas sobre la esfera).}.
+Por lo tanto,
+%
+\begin{equation}\label{I2}
+I_{T,x} := \int_T \cos(\varphi) \sen(\theta)^2 \dd(\varphi, \theta).
+\end{equation}
+%
+Para evitar calcular integrales bidimensionales explícitamente, podemos aplicar el teorema de la divergencia a \eqref{I2} si conseguimos identificar una antidivergencia del integrando.
+Importantemente, el operador divergencia que corresponde es el cartesiano\footnote{Informalmente uno diría que $T$ es lo que sale después de pasarle la aplanadora a la región correspondiente sobre la superficie de la esfera; matemáticamente el fondo del asunto es que en \eqref{I2} aparece la medida de Lebesgue convencional.} respecto a las coordenadas $(\varphi, \theta)$.
+Jugando con Mathematica encontré que la función vectorial $F$ definida por
+%
+\begin{equation}\label{F}
+F(\varphi, \theta) = \begin{bmatrix}
+-\sen(\varphi) \left( -\frac{1}{2} + \frac{1}{10}\cosh(\theta) + \frac{1}{10}\cos(2\theta) \right)\\[2ex]
+\cos(\varphi) \left( \frac{1}{10} \senh(\theta) - \frac{1}{5} \sen(2\theta) \right)
+\end{bmatrix}
+\end{equation}
+%
+satisface
+%
+\begin{equation*}
+\operatorname{div}(F)(\varphi,\theta)
+= \frac{\partial F_1(\varphi, \theta)}{\partial \varphi} + \frac{\partial F_2(\varphi, \theta)}{\partial \theta}
+= \cos(\varphi) \sen(\theta)^2.
+\end{equation*}
+%
+Por lo tanto,
+%
+\begin{equation}\label{I3}
+I_{T,x} = \int_{\partial T} F(\varphi, \theta) \cdot \nu_T(\varphi,\theta) \dd l(\varphi, \theta)
+= \sum_{i=0}^2 \int_{E_i} F(\varphi, \theta) \cdot \nu_T(\varphi,\theta) \dd l(\varphi, \theta),
+\end{equation}
+%
+donde $\nu_T$ es el vector unitario exterior normal a $T$ definido sobre $\partial T$, $l$ es la medida lineal sobre $\partial T$ y para cada $i \in \{0, 1, 2\}$, $E_i$ es el segmento que une a $(\varphi_i, \theta_i)$ con $(\varphi_{i+1}, \theta_{i+1})$, donde por supuesto los subíndices se interpretan módulo $3$; esto es,
+%
+\begin{equation}\label{Ei}
+(\forall\,i\in\{0,1,2\}) \quad E_i = \left\{ (1-s) (\varphi_i, \theta_i) + s (\varphi_{i+1}, \theta_{i+1}) \mid 0 \leq s \leq 1 \right\}.
+\end{equation}
+%
+Ahora, usando la parametrización de $E_i$ sugerida por \eqref{Ei}, las últimas integrales en \eqref{I3} se pueden escribir en la forma
+%
+\begin{multline}\label{lineIntegrals}
+\int_{E_i} F(\varphi, \theta) \cdot \nu_T(\varphi,\theta) \dd l(\varphi, \theta)\\
+= \int_0^1 F\big( (1-s) (\varphi_i, \theta_i) + s (\varphi_{i+1}, \theta_{i+1}) \big) \cdot \left[ \frac{1}{\abs{E_i}} \begin{bmatrix} 0 & 1\\-1 & 0\end{bmatrix} \begin{bmatrix} \varphi_{i+1}-\varphi_i \\ \theta_{i+1} - \theta_i \end{bmatrix} \right] \abs{E_i} \dd s\\
+= \int_0^1 F\big( (1-s) (\varphi_i, \theta_i) + s (\varphi_{i+1}, \theta_{i+1}) \big) \cdot \begin{bmatrix} \theta_{i+1}-\theta_i\\ -(\varphi_{i+1} - \varphi_i) \end{bmatrix} \dd s.
+\end{multline}
+%
+La última forma de la integral puede muy fácilmente ser alimentada a las excelentes rutinas de integración unidimensional que existen para Python, etc.
+
+\section{Posibles refinamientos}
+
+\begin{itemize}[leftmargin=*]
+\item La última integral de \eqref{lineIntegrals} se puede calcular en forma analítica también.
+Quizás efectuando la suma en \eqref{I3} de las expresiones resultantes se obtenga algo relativamente sencillo.
+\item Quizás haya una antidivergencia más sencilla que $F$ del integrando de \eqref{I2}.
+\item Para calcular las integrales
+%
+\begin{equation*}
+I_{T,y} := \int_T y(\varphi, \theta) \, \dd S(\varphi, \theta)
+\quad\text{y}\quad
+I_{T,z} := \int_T z(\varphi, \theta) \, \dd S(\varphi, \theta),
+\end{equation*}
+%
+donde $y(\varphi, \theta) = \sen(\varphi) \sen(\theta)$ y $z(\varphi, \theta) = \cos(\theta)$, probablemente no sea difícil hallar antidivergencias de los integrandos directamente o adaptando la antidivergencia $F$ dada en \eqref{F}.
+\item Alternativamente uno podría tratar de expresar $I_{T,y}$ como $I_{Q(T),x}$, donde $Q$ es una rotación adecuada (similarmente para $I_{T,z}$).
+\item \textbf{[Especulatorio]} ¿Qué hay si $T$, en vez de un triángulo, fuese la imagen por la transformación cartesiano-a-esférico de un verdadero triángulo esférico (uno donde los vértices son conectados por curvas geodésicas)?
+\item \textbf{[Especulatorio]} ¿Habría alguna simplificación si usásemos teoremas de la divergencia especializados a regiones sobre superficies directamente sobre regiones sobre la esfera?
+\end{itemize}
+
+\end{document}
