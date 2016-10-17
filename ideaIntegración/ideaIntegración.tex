@@ -29,7 +29,7 @@ Deseamos computar la integral\footnote{Omití el radio del planeta Tierra al cua
 I_{T,x} := \int_T x(\varphi, \theta) \, \dd S(\varphi, \theta),
 \end{equation}
 %
-donde $x(\varphi,\theta) = \cos(\varphi) \sen(\theta)$ y $\dd S(\varphi, \theta) = \sen(\theta) \dd(\varphi,\theta)$\footnote{Esto corresponde a la integral de la primera coordenada cartesiana sobre la región sobre la superficie de la esfera que sale de aplicar a $T$ la transformación $(\varphi, \theta) \mapsto (\cos(\varphi) \sen(\theta), \sen(\varphi) \sen(\theta))$ (notar que esto implica que la variable $\theta$ corresponde a una colatitud y que los segmentos de la frontera de $T$ no son mapeados a curvas geodésicas sobre la esfera).}.
+donde $x(\varphi,\theta) = \cos(\varphi) \sen(\theta)$ y $\dd S(\varphi, \theta) = \sen(\theta) \dd(\varphi,\theta)$\footnote{Esto corresponde a la integral de la primera coordenada cartesiana sobre la región sobre la superficie de la esfera que sale de aplicar a $T$ la transformación $(\varphi, \theta) \mapsto (\cos(\varphi) \sen(\theta), \sen(\varphi) \sen(\theta), \cos(\theta))$ (notar que esto implica que la variable $\theta$ corresponde a una colatitud y que los segmentos de la frontera de $T$ no son mapeados a curvas geodésicas sobre la esfera).}.
 Por lo tanto,
 %
 \begin{equation}\label{I2}
@@ -41,9 +41,9 @@ Importantemente, el operador divergencia que corresponde es el cartesiano\footno
 Jugando con Mathematica encontré que la función vectorial $F$ definida por
 %
 \begin{equation}\label{F}
-F(\varphi, \theta) = \begin{bmatrix}
--\sen(\varphi) \left( -\frac{1}{2} + \frac{1}{10}\cosh(\theta) + \frac{1}{10}\cos(2\theta) \right)\\[2ex]
-\cos(\varphi) \left( \frac{1}{10} \senh(\theta) - \frac{1}{5} \sen(2\theta) \right)
+F(\varphi, \theta) = \frac{1}{10}\begin{bmatrix}
+\sen(\varphi) \left( 5 - \cos(2\theta) \right)\\[2ex]
+-2 \cos(\varphi) \sen(2\theta)
 \end{bmatrix}
 \end{equation}
 %
@@ -83,7 +83,6 @@ La última forma de la integral puede muy fácilmente ser alimentada a las excel
 \begin{itemize}[leftmargin=*]
 \item La última integral de \eqref{lineIntegrals} se puede calcular en forma analítica también.
 Quizás efectuando la suma en \eqref{I3} de las expresiones resultantes se obtenga algo relativamente sencillo.
-\item Quizás haya una antidivergencia más sencilla que $F$ del integrando de \eqref{I2}.
 \item Para calcular las integrales
 %
 \begin{equation*}
