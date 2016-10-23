@@ -1,2 +1,9 @@
-*.pyc
-Tarea.pdf
+# Archivos que instruimos a Git que ignore
+*.dvi
+*.log
+*.aux
+*.toc
+*.bbl
+*.blg
+.*.swp
+README.pdf
