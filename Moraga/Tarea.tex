@@ -57,7 +57,7 @@
 \begin{center}
 \noindent\rule{15cm}{.5pt}\\
 \vspace{2cm}
-\textbf{\Large{APROXIMACI\'ON SOBRE EL CENTRO DE POBLACI\'ON EN CHILE}}\\
+\textbf{\Large{ACERCAMIENTO AL CENTRO DE MASA POBLACIONAL EN CHILE}}\\
 
 \Large{Sebasti\'an Moraga Scheuermann}\\
 
@@ -103,7 +103,7 @@ En los tiempos actuales es m\'as  necesario  que nunca poder resolver problemas 
 \\
 El siguiente texto presenta  el procedimiento que se us\'o para obtener el centro poblaci\'on de Chile, como tambi\'en las recomendaciones que se sugieren para futuros proyectos de este tipo. Se tratar\'a de explicar c\'omo se resolvi\'o y los problemas que surgieron en cada procedimiento.\\
 \\
-Es menester explicar que se us\'o un sistema operativo Windows 10, en conjunto con Python 3.5, su versi\'on Spyder como apoyo, ya que se presentaron varios problemas que se fueron solucionando a medida que aparec\'ian.
+Es menester explicar que se us\'o un sistema operativo Windows 10, en conjunto con Python 3.5, su versi\'on Spyder como apoyo para el primer m\'etodo, pra el segundo m\'etodo se us\'o python 2.17 ya que se presentaron varios problemas que se fueron solucionando a medida que aparec\'ian.
 
 \pagebreak
 
@@ -139,7 +139,7 @@ As\'i obtenemos la forma de Chile a nivel comunal, sin embargo lo necesitamos tr
     \centering
 \end{figure}
 
-\label{cap.introduccion}\section{Formulaci\'on Matem\'atica}
+\label{cap.introduccion}\section{Formulaci\'on Matem\'atica primer m\'etodo}
 Se sabe que la ecuaci\'on de centro de masa en su forma general es 
 
 \begin{equation}
@@ -221,7 +221,7 @@ Programar esto en python 3.5 no es sencillo, sin embargo no  imposible.\\
 Los archivos que traen la informaci\'on tienen algunos espacios que dificultaron la tarea de programar, se tuvo que asignar la densidad de cada comuna a mano, ya que  los datos estaban ordenados sin un patr\'on en el archivo .shp, adem\'as de las dificultades de compatibilidad entre python y W10 dificultaron demasiado. 
 \pagebreak
 
-\label{cap.introduccion}\section{Resultados num\'ericos}
+\label{cap.introduccion}\section{Resultados num\'ericos con este primer m\'etodo}
 Usando el procedimiento descrito arriba los resultados  que arroja python son los siguientes.
 \[\theta=-7.500589,\phi=-50.841106\]
 Es claro que estos resultados no son concluyentes, ni mantienen un significado en la descripci\'on geogr\'afica de Chile, el error podr\'ia deberse a error de tipeo, al traspasar los pesos o  al momento de  generar la integral. Adem\'as en la programaci\'on por compatibilidad de software algunas comunas debieron ser descartadas porque entregaban valores $nan$. \\
@@ -243,10 +243,137 @@ Luego buscamos este punto con la ayuda de Google earth
     }
     \centering
 \end{figure}
-\section{Conclusiones}
-Los resultados num\'ericos no representan lo que deber\'ian, esto se explica netamente por error humano. Fue necesario acomodar los datos a mano y lo m\'as probable es que se hayan perjudicado en el procedimiento. Sin embargo el camino, la idea de c\'omo llegar a un resultado  m\'as preciso est\'a. El fundamento y la idea de separar cada comuna en  tri\'angulos, para luego integrar sobre ellos es la correcta, tan solo teniendo un buen m\'etodo para conseguir la integral  deber\'ia bastar. Todo esto para la posible continuaci\'on del proyecto en el futuro.\\
+\label{cap.introduccion}\section{Formulaci\'on Matem\'atica segundo m\'etodo}
+Como vimos en el primer m\'etodo era necesario triangularizar  nuestras zonas para poder tener las integrales, este capitulo tratar\'a de resolver  este problema sin usar la triangularizaci\'on. \\
+En primer lugar en el programa ser\'a realizado en Python 2.17, y se usar\'an los packages GDAL y Scipy, estos son necesarios para poder tener las coordenadas en  $\phi,\theta$ las cuales  conocemos y podemos usar para resolver las integrales de la siguiente manera.
+\\
+\\
 
-La dificultad de este proyecto m\'as all\'a de la parte matem\'atica fue haber programado en un lenguaje en el que no se ten\'ia  experiencia, sin embargo con el tiempo se logr\'o, a pesar de las incontables frustraciones que llegaron a medida que cada paso logrado. Como recomendaci\'on para la continuaci\'on del proyecto,  se sugiere no usar  software incompatible, y de la misma manera tener un m\'etodo m\'as efectivo para le integraci\'on. Se sugiere  poder lograr una triangularizaci\'on que facilite la integraci\'on.
+Sea $D$ una regi\'on de v\'ertices $(\varphi_0, \theta_0)$, $(\varphi_1, \theta_1)$, $(\varphi_2, \theta_2)$,...,$(\varphi_p, \theta_p)$ dados en sentido antihorario; esto es,
+\begin{equation}\label{T}
+D = \left\{ \sum_{i=0}^p t_i (\varphi_i, \theta_i) \mid 0 \leq t_0, t_1, t_2,...,t_p \leq 1 \ \wedge \ t_0+t_1+t_2+...+t_p=1 \right\}.
+\end{equation}
+Deseamos computar las integrales
+
+\begin{equation}\label{I1}
+I_{D,x} := \int_D x(\varphi, \theta) \rho_D(\varphi,\theta) dS(\varphi, \theta) 
+\end{equation}
+\begin{equation}\label{I1}
+I_{D,y} := \int_D y(\varphi, \theta) \rho_D(\varphi,\theta) dS(\varphi, \theta) 
+\end{equation}
+\begin{equation}\label{I1}
+I_{D,z} := \int_D z(\varphi, \theta) \rho_D(\varphi,\theta) dS(\varphi, \theta) 
+\end{equation}
+Para evitar calcular directamente estas integrales usaremos el teorema de la divergencia, para ello primero expresaremos cada una de estas integrales en  sus coordenadas $(\varphi, \theta)$
+\\
+Usando el hecho que:
+\[x=R\sin(\theta)\cos(\varphi),y=R\sin(\theta)\sin(\varphi),z=R\cos(\theta) \]
+\begin{equation}\label{I1}
+I_{D,x} := \int_D  R^2\sin^2(\theta)\cos(\varphi) dS(\varphi, \theta) 
+\end{equation}
+\begin{equation}\label{I1}
+I_{D,y} := \int_D R^2\sin^2(\theta)\sin(\varphi) \rho_D(\varphi,\theta) dS(\varphi, \theta) 
+\end{equation}
+\begin{equation}\label{I1}
+I_{D,z} := \int_D R^2\cos(\theta)\sin(\theta) \rho_D(\varphi,\theta) dS(\varphi, \theta) 
+\end{equation}
+Para ocupar el teorema de la divergencia primero encontraremos antidiergencia para cada uno de los integrandos anteriores, lo cual no es dificil. Dado que la densidad en cada regi\'on D es constante este termino podemos dejarlo afuera, al igual que el Radio de la tierra R.
+\begin{equation}\label{F}
+F_x(\varphi, \theta) = \frac{5}{4}\begin{bmatrix}
+\cos(\varphi)(-\frac{1}{5}\sin(2\theta))\\[2ex]
+\sin(\varphi)(\frac{-1}{2}+\frac{\cos(2\theta)}{10})
+\end{bmatrix}
+\end{equation}
+%
+\begin{equation}\label{F}
+F_y(\varphi, \theta) = \frac{1}{2}\begin{bmatrix}
+-\sin^2(\theta)\cos(\theta) \\[2ex]
+\sin(\varphi)(\frac{\theta}{2}-\frac{\sin(2 \theta)}{4})
+\end{bmatrix}
+\end{equation}
+\begin{equation}\label{F}
+F_z(\varphi, \theta) = \frac{1}{4}\begin{bmatrix}
+0\\[2ex]
+-cos(2\theta)
+\end{bmatrix}
+\end{equation}
+satisface
+%
+\pagebreak
+
+\begin{equation*}
+\operatorname{div}(F_x)(\varphi,\theta)
+= \frac{\partial F_{x1}(\varphi, \theta)}{\partial \varphi} + \frac{\partial F_{x2}(\varphi, \theta)}{\partial \theta}
+= \cos(\varphi) \sen(\theta)^2.
+\end{equation*}
+
+\begin{equation*}
+\operatorname{div}(F_y)(\varphi,\theta)
+= \frac{\partial F_{y1}(\varphi, \theta)}{\partial \varphi} + \frac{\partial F_{y2}(\varphi, \theta)}{\partial \theta}
+= \sin(\varphi) \sen(\theta)^2.
+\end{equation*}
+\begin{equation*}
+\operatorname{div}(F_z)(\varphi,\theta)
+= \frac{\partial F_{z1}(\varphi, \theta)}{\partial \varphi} + \frac{\partial F_{z2}(\varphi, \theta)}{\partial \theta}
+= \sin(\theta)\cos(\theta)
+\end{equation*}
+
+
+\begin{equation}\label{I3}
+I_{D,x} = \int_{\partial D} F(\varphi, \theta) \cdot \nu_D(\varphi,\theta) dl(\varphi, \theta)
+= \sum_{i=0}^{p-1} \int_{E_i} F(\varphi, \theta) \cdot \nu_D(\varphi,\theta) dl(\varphi, \theta),
+\end{equation}
+%
+Donde $\nu_D$ es el vector unitario exterior normal a $D$ definido sobre $\partial D$, $l$ es la medida lineal sobre $\partial D$ y para cada $i \in \{0, 1, 2,..p-1\}$, $E_i$ es el segmento que une a $(\varphi_i, \theta_i)$ con $(\varphi_{i+1}, \theta_{i+1})$
+\begin{equation}\label{Ei}
+(\forall\,i\in\{0,1,2,...,p-1\}) \quad E_i = \left\{ (1-s) (\varphi_i, \theta_i) + s (\varphi_{i+1}, \theta_{i+1}) \mid 0 \leq s \leq 1 \right\}.
+\end{equation}
+%
+Ahora, usando la parametrizaci\'on de $E_i$ sugerida por \eqref{Ei}, las \'ultimas integrales en \eqref{I3} se pueden escribir en la forma
+
+\begin{multline}\label{lineIntegrals}
+\int_{E_i} F(\varphi, \theta) \cdot \nu_T(\varphi,\theta) d l(\varphi, \theta)\\
+= \int_0^1 F\big( (1-s) (\varphi_i, \theta_i) + s (\varphi_{i+1}, \theta_{i+1}) \big) \cdot \left[ \frac{1}{\abs{E_i}} \begin{bmatrix} 0 & 1\\-1 & 0\end{bmatrix} \begin{bmatrix} \varphi_{i+1}-\varphi_i \\ \theta_{i+1} - \theta_i \end{bmatrix} \right] \abs{E_i} d s\\
+= \int_0^1 F\big( (1-s) (\varphi_i, \theta_i) + s (\varphi_{i+1}, \theta_{i+1}) \big) \cdot \begin{bmatrix} \theta_{i+1}-\theta_i\\ -(\varphi_{i+1} - \varphi_i) \end{bmatrix} d s.
+\end{multline}
+ 
+Haciendo esto para $F_x,F_y,F_z$ logramos programar f\'acilmente en Python una rutina para que haga esto para puntos en el mapeo.
+\\
+Ahora tenemos que:
+\begin{equation}
+\int_{\Omega} \overline{x}\rho(\overline{x}) dS(\overline{x})=\sum_{comunas} R^2  \lbrace \rho_{comunas} \sum_{D} I_{D,x} + I_{D,y}+ I_{D,z} \rbrace 
+\end{equation}
+\begin{equation}
+\int_{\Omega} \rho(\overline{x}) dS(\overline{x})=Poblacion \hspace{0.1cm} Chile \rbrace 
+\end{equation}
+De manera an\'aloga se calculo la densidad para cada  comuna.
+\begin{equation}
+\rho_{comuna}= PoblacionComuna/ \int_{comuna} dS(\overline{x}) \hspace{0.1cm}  \rbrace 
+\end{equation}
+
+\label{cap.introduccion}\section{Resultados num\'ericos con este segundo m\'etodo} 
+Programando este m\'etodo en Python 2.17 se lograron los siguientes resultados num\'ericos. \\
+\[x=-212720.2802713\]
+\[y=2529296.374439\]
+\[z=-1700162.152957\]
+Los cuales llevamos nuevamente a coordenadas en $(\varphi, \theta)$ por la transformaci\'on que existe para ellos y encontramos que:
+\[\varphi=-85.19^\circ \]
+\[\theta=-56.185^\circ \]
+\begin{figure}[H]
+  \scalebox{0.5}{
+  
+    \includegraphics[scale=1]{chile4.jpg} 
+    %\caption{Descripci\'on si se desea} 
+    }
+    \centering
+\end{figure}
+
+\section{Conclusiones}
+Los resultados num\'ericos para el primer m\'etodo no representan lo que deber\'ian, explicado por alg\'un error en la programaci\'on. Fue necesario acomodar los datos a mano y lo m\'as probable es que se hayan perjudicado en el procedimiento. Sin embargo el camino, la idea de c\'omo llegar a un resultado  m\'as preciso est\'a. El fundamento y la idea de separar cada comuna en  tri\'angulos, para luego integrar sobre ellos es la correcta, tan solo teniendo un buen m\'etodo para conseguir la integral  deber\'ia bastar. Todo esto para la posible continuaci\'on del proyecto en el futuro.\\
+
+La dificultad de este proyecto m\'as all\'a de la parte matem\'atica fue haber programado en un lenguaje en el que no se ten\'ia  experiencia, sin embargo con el tiempo se logr\'o, a pesar de las incontables frustraciones que llegaron a medida que cada paso logrado. Como recomendaci\'on para la continuaci\'on del proyecto,  se sugiere no usar  software incompatible, y de la misma manera tener un m\'etodo m\'as efectivo para le integraci\'on. Se sugiere  poder lograr una triangularizaci\'on que facilite la integraci\'on.\\
+
+Para el segundo m\'etodo  no se us\'o la triangularizaci\'on pues bastaba con tener el pol\'igono cerrado para lograr tener la integral,  hay que notar que los pol\'igonos eran recorridos en sentido horario por lo que  a cada integral en la programaci\'on se le antepuso un signo menos para corregir esto. Tambi\'en  hay que tomar en cuenta que se originaron ciertos  ``agujeros'' dentro de algunos pol\'igonos, generalmente en el sur de Chile donde el car\'acter  oce\'anico de algunos trozos de tierra lograban originarlos, estos agujeros est\'an  orientados de manera contraria que al pol\'igono externo por lo cual no afectaban realmente la integral ya que se cancelaban al momento de sumarlos
 
 \chapter{Bibliografia}
 \item http:\textbackslash \textbackslash  www.bcn.cl \textbackslash siit\textbackslash mapas\_ vectoriales\textbackslash index\_ html
