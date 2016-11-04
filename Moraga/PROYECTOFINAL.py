@@ -39,9 +39,12 @@ def Iz(Pi,Pi1,Ti,Ti1):
     I=-I[0]
     return I
 def Areap(Pi,Pi1,Ti,Ti1):
-    F= lambda s: -cos(Ti+(Ti1-Ti)*s)*(Pi-Pi1)
-    I=integrate.quad(F,0,1)
-    I=-I[0]
+    if Ti == Ti1:
+        aux = cos(Ti)
+    else:
+        aux = (sin(Ti1) - sin(Ti)) / (Ti1 - Ti)
+    I = (Pi1-Pi)*aux
+    I=-I
     return I
 # Código principal
 sf = shapefile.Reader("division_comunal")
