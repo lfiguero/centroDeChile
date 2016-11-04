@@ -65,28 +65,28 @@ i=0
 k=0
 j=0
 cod=['']*346
-comunas=['']*346 
-R=6371000   
+comunas=['']*346
+R=6371000
 IX=0
 IY=0
 IZ=0
-POBLA=0   
+POBLA=0
 for comuna in sf.shapeRecords():
     nombre = comuna.record[2]
     cods = comuna.record[6]
     inicioPartes = comuna.shape.parts
     puntos = numpy.array(comuna.shape.points)
-    psp = separarPartes(puntos, inicioPartes)   
+    psp = separarPartes(puntos, inicioPartes)
     psp2=psp
-    psp3=['']*len(psp) 
+    psp3=['']*len(psp)
     INTpspx=0
     INTpspy=0
     INTpspz=0
-    AREApsp =0      
-    for k in range(0,len(psp)):        
+    AREApsp =0
+    for k in range(0,len(psp)):
         for i in range(0,len(psp[k])):
              pointX = psp[k][i,0]
-             pointY = psp[k][i,1] 
+             pointY = psp[k][i,1]
              inputEPSG = 32719
              outputEPSG = 4326
              inSpatialRef = osr.SpatialReference()
@@ -94,17 +94,17 @@ for comuna in sf.shapeRecords():
              outSpatialRef = osr.SpatialReference()
              outSpatialRef.ImportFromEPSG(outputEPSG)
              point = ogr.Geometry(ogr.wkbPoint)
-             coordTransform = osr.CoordinateTransformation(inSpatialRef, outSpatialRef)        
+             coordTransform = osr.CoordinateTransformation(inSpatialRef, outSpatialRef)
              # transform point
              point.Transform(coordTransform)
-             # create a geometry from coordinates           
+             # create a geometry from coordinates
              point.AddPoint(pointX, pointY)
              # transform point
-             point.Transform(coordTransform)        
+             point.Transform(coordTransform)
              # print point in EPSG 4326
              psp[k][i,0]=point.GetX()
              psp[k][i,1]=point.GetY()
-        #zona poligonal en coordenadas lat/long           
+        #zona poligonal en coordenadas lat/long
         AREAi=0
         INTxi=0
         INTyi=0
@@ -139,5 +139,3 @@ for comuna in sf.shapeRecords():
 X=IX/POBLA
 Y=IY/POBLA
 Z=IZ/POBLA
-            
-            
