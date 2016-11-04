@@ -77,8 +77,6 @@ for comuna in sf.shapeRecords():
     inicioPartes = comuna.shape.parts
     puntos = numpy.array(comuna.shape.points)
     psp = separarPartes(puntos, inicioPartes)
-    psp2=psp
-    psp3=['']*len(psp)
     INTpspx=0
     INTpspy=0
     INTpspz=0
