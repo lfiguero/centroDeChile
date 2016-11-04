@@ -23,11 +23,6 @@ def separarPartes(puntos, inicioPartes):
         salida.append(puntos_parte_k)
     return salida
 #Funciones integrales
-def areaBruta(puntos_parte):
-    salida = 0.0
-    for i in range(len(puntos_parte)-1):
-        salida = salida - (puntos_parte[i+1][1]-puntos_parte[i][1])*(puntos_parte[i][0]+puntos_parte[i+1][0])/2.0
-    return salida
 def Ix(Pi,Pi1,Ti,Ti1):
     F= lambda s: (5.0/4)*((cos(Pi - s*(Pi - Pi1))*sin(2.0*Ti - 2.0*s*(Ti - Ti1))*(Ti - Ti1))/5.0 - sin(Pi - s*(Pi - Pi1))*(cos(2*Ti + 2*s)/10.0 - 1.0/2)*(Pi - Pi1))
     I=integrate.quad(F,0,1)
