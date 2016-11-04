@@ -4,16 +4,13 @@ Created on Tue Oct 18 23:02:49 2016
 
 @author: Sebastián
 """
-#Código para abrir el GDAL, no necesario en LINUX
-set GDAL_DATA=C:\Users\Sebastián\Documents\R\win-library\3.2\rgdal\gdal
-cd C:\Miniconda2
-python
 # coding: utf-8
 import shapefile
 import numpy
 import matplotlib.pyplot as plt
 import os
-import ogr, osr, os, sys
+import ogr, osr # Paquetes que vienen con GDAL
+import os, sys
 import scipy as sp
 from scipy import integrate
 
