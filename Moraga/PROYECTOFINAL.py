@@ -61,9 +61,6 @@ def Areap(Pi,Pi1,Ti,Ti1):
     return I
 # Código principal
 sf = shapefile.Reader("division_comunal")
-i=0
-k=0
-j=0
 cod=['']*346
 comunas=['']*346
 R=6371000
@@ -71,7 +68,7 @@ IX=0
 IY=0
 IZ=0
 POBLA=0
-for comuna in sf.shapeRecords():
+for j, comuna in enumerate(sf.shapeRecords()):
     nombre = comuna.record[2]
     cods = comuna.record[6]
     inicioPartes = comuna.shape.parts
@@ -132,7 +129,6 @@ for comuna in sf.shapeRecords():
     IY=IY+ICy
     IZ=IZ+ICz
     POBLA=POBLA+H[j]
-    j=j+1
 #COORDENADAS EN X Y Z
 X=IX/POBLA
 Y=IY/POBLA
