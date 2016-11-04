@@ -68,6 +68,15 @@ IX=0
 IY=0
 IZ=0
 POBLA=0
+# Cómputos geográficos preliminares
+inputEPSG = 32719
+outputEPSG = 4326
+inSpatialRef = osr.SpatialReference()
+inSpatialRef.ImportFromEPSG(inputEPSG)
+outSpatialRef = osr.SpatialReference()
+outSpatialRef.ImportFromEPSG(outputEPSG)
+coordTransform = osr.CoordinateTransformation(inSpatialRef, outSpatialRef)
+# Ciclo por comunas
 for j, comuna in enumerate(sf.shapeRecords()):
     nombre = comuna.record[2]
     cods = comuna.record[6]
@@ -82,14 +91,7 @@ for j, comuna in enumerate(sf.shapeRecords()):
         for i in range(0,len(psp[k])):
              pointX = psp[k][i,0]
              pointY = psp[k][i,1]
-             inputEPSG = 32719
-             outputEPSG = 4326
-             inSpatialRef = osr.SpatialReference()
-             inSpatialRef.ImportFromEPSG(inputEPSG)
-             outSpatialRef = osr.SpatialReference()
-             outSpatialRef.ImportFromEPSG(outputEPSG)
              point = ogr.Geometry(ogr.wkbPoint)
-             coordTransform = osr.CoordinateTransformation(inSpatialRef, outSpatialRef)
              # transform point
              point.Transform(coordTransform)
              # create a geometry from coordinates
