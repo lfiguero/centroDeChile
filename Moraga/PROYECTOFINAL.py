@@ -14,11 +14,9 @@ import os, sys
 import scipy as sp
 from scipy import integrate
 
-# Este código debe ejecutarse en el mismo directorio donde estan
-# division_comunal.shp, division_comunap.prj, etc. Este código dibuja cada
-# parte (incluyendo islas, etc.) de cada comuna por separado.
-#cambiamos el directorio
-os.chdir("C:\\proyectotaller")
+# Este código debe ejecutarse en el mismo directorio donde están
+# division_comunal.shp, division_comunal.prj, etc.
+
 # Función auxiliar que separa arreglo de puntos en las distintas partes
 def separarPartes(puntos, inicioPartes):
     """ puntos es un arreglo de numpy; inicioPartes una lista de primer índice
