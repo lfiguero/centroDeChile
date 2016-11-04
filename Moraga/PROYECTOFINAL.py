@@ -8,11 +8,8 @@ Created on Tue Oct 18 23:02:49 2016
 import shapefile
 import numpy
 import matplotlib.pyplot as plt
-import os
 import ogr, osr # Paquetes que vienen con GDAL
-import os, sys
-import scipy as sp
-from scipy import integrate
+from scipy import integrate, cos, sin
 
 # Este código debe ejecutarse en el mismo directorio donde están
 # division_comunal.shp, division_comunal.prj, etc.
@@ -40,22 +37,22 @@ def areaBruta(puntos_parte):
         salida = salida - (puntos_parte[i+1][1]-puntos_parte[i][1])*(puntos_parte[i][0]+puntos_parte[i+1][0])/2.0
     return salida
 def Ix(Pi,Pi1,Ti,Ti1):
-    F= lambda s: (5.0/4)*((sp.cos(Pi - s*(Pi - Pi1))*sp.sin(2.0*Ti - 2.0*s*(Ti - Ti1))*(Ti - Ti1))/5.0 - sp.sin(Pi - s*(Pi - Pi1))*(sp.cos(2*Ti + 2*s)/10.0 - 1.0/2)*(Pi - Pi1))
+    F= lambda s: (5.0/4)*((cos(Pi - s*(Pi - Pi1))*sin(2.0*Ti - 2.0*s*(Ti - Ti1))*(Ti - Ti1))/5.0 - sin(Pi - s*(Pi - Pi1))*(cos(2*Ti + 2*s)/10.0 - 1.0/2)*(Pi - Pi1))
     I=integrate.quad(F,0,1)
     I=-I[0]
     return I
 def Iy(Pi,Pi1,Ti,Ti1):
-    F= lambda s: (sp.cos(Pi - s*(Pi - Pi1))*(sp.sin(Ti - s*(Ti - Ti1))*sp.sin(Ti - s*(Ti - Ti1)))*(Ti - Ti1))/2.0 - (sp.sin(Pi - s*(Pi - Pi1))*(Pi - Pi1)*(sp.sin(2.0*Ti - 2.0*s*(Ti - Ti1))/4.0 - Ti/2.0 + (s*(Ti - Ti1))/2.0))/2.0
+    F= lambda s: (cos(Pi - s*(Pi - Pi1))*(sin(Ti - s*(Ti - Ti1))*sin(Ti - s*(Ti - Ti1)))*(Ti - Ti1))/2.0 - (sin(Pi - s*(Pi - Pi1))*(Pi - Pi1)*(sin(2.0*Ti - 2.0*s*(Ti - Ti1))/4.0 - Ti/2.0 + (s*(Ti - Ti1))/2.0))/2.0
     I=integrate.quad(F,0,1)
     I=-I[0]
     return I
 def Iz(Pi,Pi1,Ti,Ti1):
-    F= lambda s: -(sp.cos(2.0*Ti - 2.0*s*(Ti - Ti1))*(Pi - Pi1))/4.0
+    F= lambda s: -(cos(2.0*Ti - 2.0*s*(Ti - Ti1))*(Pi - Pi1))/4.0
     I=integrate.quad(F,0,1)
     I=-I[0]
     return I
 def Areap(Pi,Pi1,Ti,Ti1):
-    F= lambda s: -sp.cos(Ti+(Ti1-Ti)*s)*(Pi-Pi1)
+    F= lambda s: -cos(Ti+(Ti1-Ti)*s)*(Pi-Pi1)
     I=integrate.quad(F,0,1)
     I=-I[0]
     return I
