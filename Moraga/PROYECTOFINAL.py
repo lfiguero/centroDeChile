@@ -92,8 +92,6 @@ for j, comuna in enumerate(sf.shapeRecords()):
              pointX = psp[k][i,0]
              pointY = psp[k][i,1]
              point = ogr.Geometry(ogr.wkbPoint)
-             # transform point
-             point.Transform(coordTransform)
              # create a geometry from coordinates
              point.AddPoint(pointX, pointY)
              # transform point
