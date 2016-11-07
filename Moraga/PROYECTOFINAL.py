@@ -48,8 +48,9 @@ def Areap(Pi,Pi1,Ti,Ti1):
     return I
 # Código principal
 sf = shapefile.Reader("division_comunal")
-cod=['']*346
-comunas=['']*346
+ncomunas = 346
+cod=['']*ncomunas
+comunas=['']*ncomunas
 R=6371000
 IX=0
 IY=0
@@ -63,6 +64,11 @@ inSpatialRef.ImportFromEPSG(inputEPSG)
 outSpatialRef = osr.SpatialReference()
 outSpatialRef.ImportFromEPSG(outputEPSG)
 coordTransform = osr.CoordinateTransformation(inSpatialRef, outSpatialRef)
+# Alocación de memoria para integrales sobre comunas
+INTpspx = numpy.zeros(ncomunas)
+INTpspy = numpy.zeros(ncomunas)
+INTpspz = numpy.zeros(ncomunas)
+AREApsp = numpy.zeros(ncomunas)
 # Ciclo por comunas
 for j, comuna in enumerate(sf.shapeRecords()):
     nombre = comuna.record[2]
@@ -70,10 +76,6 @@ for j, comuna in enumerate(sf.shapeRecords()):
     inicioPartes = comuna.shape.parts
     puntos = numpy.array(comuna.shape.points)
     psp = separarPartes(puntos, inicioPartes)
-    INTpspx=0
-    INTpspy=0
-    INTpspz=0
-    AREApsp =0
     for k in range(0,len(psp)):
         for i in range(0,len(psp[k])):
              pointX = psp[k][i,0]
@@ -104,14 +106,14 @@ for j, comuna in enumerate(sf.shapeRecords()):
             INTxi=INTxi+IIX
             INTyi=INTyi+IIY
             INTzi=INTzi+IIZ
-        INTpspx=INTpspx+INTxi
-        INTpspy=INTpspy+INTyi
-        INTpspz=INTpspz+INTzi
-        AREApsp=AREApsp+AREAi
-    Densicomunal=H[j]/AREApsp
-    ICX=Densicomunal*R*INTpspx
-    ICy=Densicomunal*R*INTpspy
-    ICz=Densicomunal*R*INTpspz
+        INTpspx[j] += INTxi
+        INTpspy[j] += INTyi
+        INTpspz[j] += INTzi
+        AREApsp[j] += AREAi
+    Densicomunal=H[j]/AREApsp[j]
+    ICX=Densicomunal*R*INTpspx[j]
+    ICy=Densicomunal*R*INTpspy[j]
+    ICz=Densicomunal*R*INTpspz[j]
     IX=IX+ICX
     IY=IY+ICy
     IZ=IZ+ICz
