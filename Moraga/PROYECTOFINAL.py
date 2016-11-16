@@ -34,6 +34,8 @@ def Iy(Pi,Pi1,Ti,Ti1):
     I=integrate.quad(F,0,1)
     I=-I[0]
     return I
+
+#COMPARAR CON LA ANTERIOR
 def Iz(Pi,Pi1,Ti,Ti1):
     F= lambda s: -(cos(2.0*Ti - 2.0*s*(Ti - Ti1))*(Pi - Pi1))/4.0
     I=integrate.quad(F,0,1)
@@ -125,3 +127,8 @@ for j, comuna in enumerate(sf.shapeRecords()):
 X=IX/POBLA
 Y=IY/POBLA
 Z=IZ/POBLA
+THETA=-(scipy.arctan(scipy.sqrt(X*X+Y*Y)/Z)-scipy.pi/2)*180/scipy.pi
+PHI=(scipy.arctan(Y/X))*180/scipy.pi
+print(THETA)
+print(PHI)
+
