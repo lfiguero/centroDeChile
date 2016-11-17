@@ -3,8 +3,7 @@ import shapefile
 import numpy
 import matplotlib.pyplot as plt
 import ogr, osr # Paquetes que vienen con GDAL
-from scipy import integrate, cos, sin
-import scipy
+from scipy import integrate, cos, sin, pi
 from H import H # Esto está en H.py
 
 # Este código debe ejecutarse en el mismo directorio donde están
@@ -89,8 +88,8 @@ for j, comuna in enumerate(sf.shapeRecords()):
              # transform point
              point.Transform(coordTransform)
              # print point in EPSG 4326
-             RADx=point.GetX()*scipy.pi/180
-             RADy=point.GetY()*scipy.pi/180
+             RADx=point.GetX()*pi/180
+             RADy=point.GetY()*pi/180
              psp[k][i,0]=RADx
              psp[k][i,1]=RADy
         #zona poligonal en coordenadas lat/long
@@ -127,8 +126,7 @@ for j, comuna in enumerate(sf.shapeRecords()):
 X=IX/POBLA
 Y=IY/POBLA
 Z=IZ/POBLA
-THETA=-(scipy.arctan(scipy.sqrt(X*X+Y*Y)/Z)-scipy.pi/2)*180/scipy.pi
-PHI=(scipy.arctan(Y/X))*180/scipy.pi
+THETA=-(scipy.arctan(scipy.sqrt(X*X+Y*Y)/Z)-pi/2)*180/pi
+PHI=(scipy.arctan(Y/X))*180/pi
 print(THETA)
 print(PHI)
-
