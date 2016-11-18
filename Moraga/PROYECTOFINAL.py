@@ -24,7 +24,7 @@ def separarPartes(puntos, inicioPartes):
     return salida
 #Funciones integrales
 def Ix(Pi,Pi1,Ti,Ti1):
-    F= lambda s: (5.0/4)*((cos(Pi - s*(Pi - Pi1))*sin(2.0*Ti - 2.0*s*(Ti - Ti1))*(Ti - Ti1))/5.0 - sin(Pi - s*(Pi - Pi1))*(cos(2*Ti + 2*s)/10.0 - 1.0/2)*(Pi - Pi1))
+    F= lambda s: ((cos(Pi - s*(Pi - Pi1))*sin(2.0*Ti - 2.0*s*(Ti - Ti1))*(Ti - Ti1))/5.0 - sin(Pi - s*(Pi - Pi1))*(cos(2*Ti + 2*s)/10.0 - 1.0/2)*(Pi - Pi1))
     I=integrate.quad(F,0,1)
     I=-I[0]
     return I
