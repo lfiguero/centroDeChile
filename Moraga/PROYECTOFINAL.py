@@ -3,7 +3,7 @@ import shapefile
 import numpy
 import matplotlib.pyplot as plt
 import ogr, osr # Paquetes que vienen con GDAL
-from scipy import integrate, cos, sin
+from scipy import integrate, cos, sin, pi
 from H import H # Esto está en H.py
 
 # Este código debe ejecutarse en el mismo directorio donde están
@@ -33,6 +33,8 @@ def Iy(Pi,Pi1,Ti,Ti1):
     I=integrate.quad(F,0,1)
     I=-I[0]
     return I
+
+#COMPARAR CON LA ANTERIOR
 def Iz(Pi,Pi1,Ti,Ti1):
     F= lambda s: -(cos(2.0*Ti - 2.0*s*(Ti - Ti1))*(Pi - Pi1))/4.0
     I=integrate.quad(F,0,1)
@@ -86,8 +88,10 @@ for j, comuna in enumerate(sf.shapeRecords()):
              # transform point
              point.Transform(coordTransform)
              # print point in EPSG 4326
-             psp[k][i,0]=point.GetX()
-             psp[k][i,1]=point.GetY()
+             RADx=point.GetX()*pi/180
+             RADy=point.GetY()*pi/180
+             psp[k][i,0]=RADx
+             psp[k][i,1]=RADy
         #zona poligonal en coordenadas lat/long
         AREAi=0
         INTxi=0
@@ -122,3 +126,7 @@ for j, comuna in enumerate(sf.shapeRecords()):
 X=IX/POBLA
 Y=IY/POBLA
 Z=IZ/POBLA
+THETA=-(scipy.arctan(scipy.sqrt(X*X+Y*Y)/Z)-pi/2)*180/pi
+PHI=(scipy.arctan(Y/X))*180/pi
+print(THETA)
+print(PHI)
