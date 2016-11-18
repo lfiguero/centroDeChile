@@ -3,7 +3,7 @@ import shapefile
 import numpy
 import matplotlib.pyplot as plt
 import ogr, osr # Paquetes que vienen con GDAL
-from scipy import integrate, cos, sin, pi, arctan
+from scipy import integrate, cos, sin, pi, arctan, sqrt
 from H import H # Esto está en H.py
 
 # Este código debe ejecutarse en el mismo directorio donde están
@@ -33,21 +33,19 @@ def Iy(Pi,Pi1,Ti,Ti1):
     I=integrate.quad(F,0,1)
     I=-I[0]
     return I
-
-#COMPARAR CON LA ANTERIOR
 def Iz(Pi,Pi1,Ti,Ti1):
-    F= lambda s: -(cos(2.0*Ti - 2.0*s*(Ti - Ti1))*(Pi - Pi1))/4.0
-    I=integrate.quad(F,0,1)
-    I=-I[0]
-    return I
+    F= lambda s: (sin(2*Ti - 2*s*(Ti - Ti1))*(Pi - Pi1))/(8*(Ti - Ti1))
+    I=F(1)-F(0)
+    I=-I
+    return I 
 def Areap(Pi,Pi1,Ti,Ti1):
     if Ti == Ti1:
         aux = cos(Ti)
     else:
         aux = (sin(Ti1) - sin(Ti)) / (Ti1 - Ti)
     I = (Pi1-Pi)*aux
-    I=-I
-    return I
+    I=I
+    return -I
 # Código principal
 sf = shapefile.Reader("division_comunal")
 ncomunas = 346
@@ -88,24 +86,24 @@ for j, comuna in enumerate(sf.shapeRecords()):
              # transform point
              point.Transform(coordTransform)
              # print point in EPSG 4326
-             RADx=point.GetX()*pi/180
-             RADy=point.GetY()*pi/180
-             psp[k][i,0]=RADx
-             psp[k][i,1]=RADy
+             RADx=point.GetX()*pi/180        #ANGULO LONGITUD (PHI)
+             RADy=(pi/2-point.GetY()*pi/180) #ANGULO CO-LATITUD (THETA)
+             psp[k][i,0]=RADx # PHI
+             psp[k][i,1]=RADy # THETA
         #zona poligonal en coordenadas lat/long
         AREAi=0
         INTxi=0
         INTyi=0
         INTzi=0
         for i in range(0,len(psp[k])-1):
-            Pi=psp[k][i,1]
-            Pi1=psp[k][i+1,1]
-            Ti=psp[k][i,0]
-            Ti1=psp[k][i+1,0]
+            Pi=psp[k][i,0]
+            Pi1=psp[k][i+1,0]
+            Ti=psp[k][i,1]
+            Ti1=psp[k][i+1,1]
             IIX=Ix(Pi,Pi1,Ti,Ti1)
             IIY=Iy(Pi,Pi1,Ti,Ti1)
             IIZ=Iz(Pi,Pi1,Ti,Ti1)
-            A=Areap(Pi,Pi1,Ti,Ti1)
+            A=-Areap(Pi,Pi1,Ti,Ti1)
             AREAi=AREAi+A
             INTxi=INTxi+IIX
             INTyi=INTyi+IIY
@@ -126,7 +124,7 @@ for j, comuna in enumerate(sf.shapeRecords()):
 X=IX/POBLA
 Y=IY/POBLA
 Z=IZ/POBLA
-THETA=-(arctan(sqrt(X*X+Y*Y)/Z)-pi/2)*180/pi
-PHI=(arctan(Y/X))*180/pi
-print(THETA)
-print(PHI)
+THETA=(pi/2-arctan(sqrt(X*X+Y*Y)/Z))*180/pi #ANGULO EN LATITUD
+PHI=(arctan(Y/X))*180/pi                    #ANGULO EN LONGITUD
+print("LAT",THETA)
+print("LON",PHI)
