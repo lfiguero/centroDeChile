@@ -45,7 +45,7 @@ def Areap(Pi,Pi1,Ti,Ti1):
         aux = (sin(Ti1) - sin(Ti)) / (Ti1 - Ti)
     I = (Pi1-Pi)*aux
     I=I
-    return -I
+    return I
 # Código principal
 sf = shapefile.Reader("division_comunal")
 ncomunas = 346
@@ -103,7 +103,7 @@ for j, comuna in enumerate(sf.shapeRecords()):
             IIX=Ix(Pi,Pi1,Ti,Ti1)
             IIY=Iy(Pi,Pi1,Ti,Ti1)
             IIZ=Iz(Pi,Pi1,Ti,Ti1)
-            A=-Areap(Pi,Pi1,Ti,Ti1)
+            A=Areap(Pi,Pi1,Ti,Ti1)
             AREAi=AREAi+A
             INTxi=INTxi+IIX
             INTyi=INTyi+IIY
