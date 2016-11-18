@@ -3,7 +3,7 @@ import shapefile
 import numpy
 import matplotlib.pyplot as plt
 import ogr, osr # Paquetes que vienen con GDAL
-from scipy import integrate, cos, sin, pi
+from scipy import integrate, cos, sin, pi, arctan
 from H import H # Esto está en H.py
 
 # Este código debe ejecutarse en el mismo directorio donde están
@@ -126,7 +126,7 @@ for j, comuna in enumerate(sf.shapeRecords()):
 X=IX/POBLA
 Y=IY/POBLA
 Z=IZ/POBLA
-THETA=-(scipy.arctan(scipy.sqrt(X*X+Y*Y)/Z)-pi/2)*180/pi
-PHI=(scipy.arctan(Y/X))*180/pi
+THETA=-(arctan(sqrt(X*X+Y*Y)/Z)-pi/2)*180/pi
+PHI=(arctan(Y/X))*180/pi
 print(THETA)
 print(PHI)
