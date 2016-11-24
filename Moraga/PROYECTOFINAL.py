@@ -28,11 +28,8 @@ def Ix(Pi,Pi1,Ti,Ti1):
     I=integrate.quad(F,0,1)
     I=-I[0]
     return I
-
-
-
 def Iy(Pi,Pi1,Ti,Ti1):
-    F= lambda s: (cos(Pi - s*(Pi - Pi1))*(sin(Ti - s*(Ti - Ti1))*sin(Ti - s*(Ti - Ti1)))*(Ti - Ti1))/2.0 - (sin(Pi - s*(Pi - Pi1))*(Pi - Pi1)*(sin(2.0*Ti - 2.0*s*(Ti - Ti1))/4.0 - Ti/2.0 + (s*(Ti - Ti1))/2.0))/2.0
+    F= lambda s: cos(Pi - s*(Pi - Pi1))*sin(Ti - s*(Ti - Ti1))*(sin(Ti - s*(Ti - Ti1)))*(Ti - Ti1)
     I=integrate.quad(F,0,1)
     I=-I[0]
     return I
@@ -52,8 +49,6 @@ def Areap(Pi,Pi1,Ti,Ti1):
 # Código principal
 sf = shapefile.Reader("division_comunal")
 ncomunas = 346
-cod=['']*ncomunas
-comunas=['']*ncomunas
 R=6371000
 IX=0
 IY=0
@@ -116,7 +111,6 @@ for j, comuna in enumerate(sf.shapeRecords()):
         INTpspy[j] += INTyi
         INTpspz[j] += INTzi
         AREApsp[j] += AREAi
-    comunas[j] = nombre
     Densicomunal=H[j]/AREApsp[j]
     ICX=Densicomunal*R*INTpspx[j]
     ICy=Densicomunal*R*INTpspy[j]
