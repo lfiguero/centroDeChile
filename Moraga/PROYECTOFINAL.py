@@ -24,14 +24,17 @@ def separarPartes(puntos, inicioPartes):
     return salida
 #Funciones integrales
 def Ix(Pi,Pi1,Ti,Ti1):
-    F= lambda s: (cos(Pi - s*(Pi - Pi1))*sin(2.0*Ti - 2.0*s*(Ti - Ti1))*(Ti - Ti1))/4.0 - (5.0*sin(Pi - s*(Pi - Pi1))*(cos(2.0*Ti + 2.0*s)/10.0 - 1.0/2.0)*(Pi - Pi1))/4.0
+    F= lambda s: -(cos(Ti - s*(Ti - Ti1)))*(cos(Ti - s*(Ti - Ti1)))*sin(Pi - s*(Pi - Pi1))*(Ti - Ti1)
     I=integrate.quad(F,0,1)
-    I=I[0]
+    I=-I[0]
     return I
+
+
+
 def Iy(Pi,Pi1,Ti,Ti1):
     F= lambda s: (cos(Pi - s*(Pi - Pi1))*(sin(Ti - s*(Ti - Ti1))*sin(Ti - s*(Ti - Ti1)))*(Ti - Ti1))/2.0 - (sin(Pi - s*(Pi - Pi1))*(Pi - Pi1)*(sin(2.0*Ti - 2.0*s*(Ti - Ti1))/4.0 - Ti/2.0 + (s*(Ti - Ti1))/2.0))/2.0
     I=integrate.quad(F,0,1)
-    I=I[0]
+    I=-I[0]
     return I
 def Iz(Pi,Pi1,Ti,Ti1):
     F= lambda s: (sin(2.0*Ti - 2.0*s*(Ti - Ti1))*(Pi - Pi1))/(8.0*(Ti - Ti1))
@@ -44,7 +47,7 @@ def Areap(Pi,Pi1,Ti,Ti1):
     else:
         aux = (sin(Ti1) - sin(Ti)) / (Ti1 - Ti)
     I = (Pi1-Pi)*aux
-    I=I
+    I=-I
     return I
 # Código principal
 sf = shapefile.Reader("division_comunal")
@@ -113,6 +116,7 @@ for j, comuna in enumerate(sf.shapeRecords()):
         INTpspy[j] += INTyi
         INTpspz[j] += INTzi
         AREApsp[j] += AREAi
+    comunas[j] = nombre
     Densicomunal=H[j]/AREApsp[j]
     ICX=Densicomunal*R*INTpspx[j]
     ICy=Densicomunal*R*INTpspy[j]
@@ -125,7 +129,7 @@ for j, comuna in enumerate(sf.shapeRecords()):
 X=IX/POBLA
 Y=IY/POBLA
 Z=IZ/POBLA
-THETA=(arctan(sqrt(X*X+Y*Y)/Z)-pi/2)*180/pi     #ANGULO EN Latitud
-PHI=-((arctan(Y/X))*180/pi+180)                #ANGULO EN Longitud
+THETA=(arctan(sqrt(X*X+Y*Y)/Z))*180/pi-90    #ANGULO EN Latitud
+PHI=((arctan(Y/X))*180/pi)        #ANGULO EN Longitud
 print("LON",PHI)
 print("LAT",THETA)
