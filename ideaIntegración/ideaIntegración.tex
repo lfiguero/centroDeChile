@@ -10,9 +10,38 @@
 \newcommand{\norm}[2][y]{\if#1y\left\fi\lVert#2\if#1y\right\fi\rVert} % Norm
 \newcommand{\abs}[2][y]{\if#1y\left\fi\lvert#2\if#1y\right\fi\rvert} % Absolute value
 
+\newtheorem{thm}{Teorema}
+\newtheorem{proposition}[thm]{Proposición}
+
 \begin{document}
 \title{Una idea para calcular ciertas integrales}
 \maketitle
+
+\section{Geodésicas sobre la esfera}
+
+Si $p, q \in \mathbb{S}^2 \subset \mathbb{R}^3$ no son idénticos ni antipodales, existe un único gran círculo $C(p,q)$ sobre $\mathbb{S}^2$ que los conecta.
+La curva geodésica $\Gamma(p,q) \subset \mathbb{S}^2$ que conecta a $p$ y $q$ es la más corta de las dos curvas en las que $p$ y $q$ cortan a $C(p,q)$.
+
+\begin{proposition} La curva $\Gamma(p,q)$ admite la siguiente parametrización:
+%
+\begin{equation*}
+\Gamma(p,q) = \left\{ \cos(\zeta) \, p + \sen(\zeta) \, \frac{q - (p\cdot q)p}{\norm{q - (p\cdot q)p}} \mid \zeta \in [0, \arccos(p\cdot q)] \right\}.
+\end{equation*}
+%
+\begin{proof} Ejercicio.
+\end{proof}
+\end{proposition}
+
+Sean $p_0, p_1, \dotsc, p_{N-1}$ miembros de $\mathbb{S}^2$ tales que $p_i$ y $p_{i+1}$ no son idénticos ni antipodales para todo $i \in \{0, \dotsc, N-1\}$, donde hemos usado la convención $p_N = p_0$.
+Sea $P$ la región encerrada por las curvas geodésicas $\Gamma(p_i, p_{i+1})$, $i \in \{0, \dotsc, N-1\}$.
+Sea $\sigma$ la medida de superficie sobre $\mathbb{S}^2$, $l$ la medida lineal sobre $\partial_{\mathbb{S}^2} P$, que a su vez es la frontera de $P$ respecto a la topología de subespacio que $\mathbb{S}^2$ hereda de $\mathbb{R}^3$, $F \colon \mathbb{S}^2 \to \mathbb{R}^3$ una función suficientemente regular y $\nu_P \colon \partial_{\mathbb{S}^2} P \to \mathbb{R}^3$ el vector unitario que en para $l$-casi-todo punto de su dominio es normal y exterior a $P$ y tangente a $\mathbb{S}^2$.
+Entonces se cumple la siguiente variante del teorema de la divergencia:
+%
+\begin{equation*}
+\int_P \operatorname{div}_{\mathbb{S}^2}(F(x)) \dd\sigma(x)
+= \int_{\partial_{\mathbb{S}^2} P} F(x) \cdot \nu_P(x) \dd l(x)
+= \sum_{i=0}^{N-1} \int_{\Gamma(p_i,p_{i+1})} F(x) \cdot \nu_P(x) \dd l(x).
+\end{equation*}
 
 \section{La idea}
 
