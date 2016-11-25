@@ -17,31 +17,73 @@
 \title{Una idea para calcular ciertas integrales}
 \maketitle
 
-\section{Geodésicas sobre la esfera}
+\section{Curvas geodésicas y teorema de la divergencia sobre la esfera}
 
 Si $p, q \in \mathbb{S}^2 \subset \mathbb{R}^3$ no son idénticos ni antipodales, existe un único gran círculo $C(p,q)$ sobre $\mathbb{S}^2$ que los conecta.
 La curva geodésica $\Gamma(p,q) \subset \mathbb{S}^2$ que conecta a $p$ y $q$ es la más corta de las dos curvas en las que $p$ y $q$ cortan a $C(p,q)$.
 
-\begin{proposition} La curva $\Gamma(p,q)$ admite la siguiente parametrización:
+\begin{proposition}\label{pro:param} La curva $\Gamma(p,q)$ admite la siguiente parametrización:
 %
 \begin{equation*}
-\Gamma(p,q) = \left\{ \cos(\zeta) \, p + \sen(\zeta) \, \frac{q - (p\cdot q)p}{\norm{q - (p\cdot q)p}} \mid \zeta \in [0, \arccos(p\cdot q)] \right\}.
+\Gamma(p,q) = \left\{ x(\zeta;p,q) = \cos(\zeta) \, p + \sen(\zeta) \, \frac{q - (p\cdot q)p}{\norm{q - (p\cdot q)p}} \mid \zeta \in [0, \arccos(p\cdot q)] \right\}.
 \end{equation*}
 %
 \begin{proof} Ejercicio.
 \end{proof}
 \end{proposition}
+%
+Las siguientes fórmulas se obtienen inmediatamente:
+%
+\begin{equation}\label{param-aux}
+\begin{gathered}
+\abs{x(\zeta;p,q)} = 1, \quad
+\frac{\mathrm{d}}{\mathrm{d}\zeta} x(\zeta;p,q) = -\sen(\zeta) \, p + \cos(\zeta) \, \frac{q - (p\cdot q)p}{\norm{q - (p\cdot q)p}},\\
+\abs{\frac{\mathrm{d}}{\mathrm{d}\zeta} x(\zeta;p,q)} = 1, \quad
+\frac{\mathrm{d}}{\mathrm{d}\zeta} x(\zeta;p,q) \cdot x(\zeta;p,q) = 0,\\
+\frac{\mathrm{d}}{\mathrm{d}\zeta} x(\zeta;p,q) \times x(\zeta;p,q) = \frac{q \times p}{\norm{q \times p}}.
+\end{gathered}
+\end{equation}
 
-Sean $p_0, p_1, \dotsc, p_{N-1}$ miembros de $\mathbb{S}^2$ tales que $p_i$ y $p_{i+1}$ no son idénticos ni antipodales para todo $i \in \{0, \dotsc, N-1\}$, donde hemos usado la convención $p_N = p_0$.
-Sea $P$ la región encerrada por las curvas geodésicas $\Gamma(p_i, p_{i+1})$, $i \in \{0, \dotsc, N-1\}$.
+Sean $p_0, p_1, \dotsc, p_{N-1}$ miembros de $\mathbb{S}^2$ tales que $p_i$ y $p_{i+1}$ no son idénticos ni antipodales para todo $i \in \{0, \dotsc, N-1\}$ (aquí y en lo que sigue usaremos la convención $p_N = p_0$) y sea $P$ una región encerrada por las curvas geodésicas $\Gamma(p_i, p_{i+1})$, $i \in \{0, \dotsc, N-1\}$, en sentido antihorario.
 Sea $\sigma$ la medida de superficie sobre $\mathbb{S}^2$, $l$ la medida lineal sobre $\partial_{\mathbb{S}^2} P$, que a su vez es la frontera de $P$ respecto a la topología de subespacio que $\mathbb{S}^2$ hereda de $\mathbb{R}^3$, $F \colon \mathbb{S}^2 \to \mathbb{R}^3$ una función suficientemente regular y $\nu_P \colon \partial_{\mathbb{S}^2} P \to \mathbb{R}^3$ el vector unitario que en para $l$-casi-todo punto de su dominio es normal y exterior a $P$ y tangente a $\mathbb{S}^2$.
 Entonces se cumple la siguiente variante del teorema de la divergencia:
 %
-\begin{equation*}
+\begin{equation}\label{manifoldDivergenceTheorem}
 \int_P \operatorname{div}_{\mathbb{S}^2}(F(x)) \dd\sigma(x)
 = \int_{\partial_{\mathbb{S}^2} P} F(x) \cdot \nu_P(x) \dd l(x)
-= \sum_{i=0}^{N-1} \int_{\Gamma(p_i,p_{i+1})} F(x) \cdot \nu_P(x) \dd l(x).
+\end{equation}
+%
+
+La integral del lado derecho de \eqref{manifoldDivergenceTheorem} puede escribirse como la suma de las integrales correspondientes sobre $\Gamma(p_i, p_{i+1})$, $i \in \{0, \dotsc, N-1\}$.
+Cada una de estas integrales, a su vez, mediante la parametrización dada en la proposición \ref{pro:param}, puede escribirse como
+%
+\begin{equation*}
+\int_0^{\arccos(p_i, p_{i+1})} F(x(\zeta;p_i,p_{i+1})) \cdot \nu_P(x(\zeta;p_i,p_{i+1})) \abs{\frac{\mathrm{d}}{\mathrm{d}\zeta} x(\zeta;p_i,p_{i+1})} \dd \zeta.
 \end{equation*}
+%
+Usando las fórmulas en \eqref{param-aux} obtenemos que $\nu_P(x(\zeta;p_i,p_{i+1}))$ es el producto cruz entre $\frac{\mathrm{d}}{\mathrm{d}\zeta} x(\zeta;p_i,p_{i+1})$ y $x(\zeta;p_i,p_{i+1})$ (informalmente, derecha es el producto cruz entre adelante y arriba) y así el lado derecho de \eqref{manifoldDivergenceTheorem} toma la forma
+%
+\begin{equation*}
+\sum_{i=0}^{N-1} \int_0^{\arccos(p_i,p_{i+1})} F(x(\zeta;p_i,p_{i+1})) \dd \zeta \cdot \frac{p_{i+1} \times p_i}{\norm{p_{i+1} \times p_i}}
+\end{equation*}
+%
+
+Por otro lado, $\operatorname{div}_{\mathbb{S}^2}(F)$ es sencillamente la divergencia convencional de $\mathbb{R}^3$ aplicada a $\mathbb{R}^3 \ni x \mapsto F(x/\norm{x}) \in \mathbb{R}^3$ y restringida a $\mathbb{S}^2$.
+Equivalentemente, si $\xi(\varphi,\theta) = \left[ \cos(\varphi) \sen(\theta), \sen(\varphi) \sen(\theta), \cos(\theta) \right]^T$,
+%
+\begin{multline}
+\operatorname{div}_{\mathbb{S}^2} F(\xi(\varphi,\theta))\\
+= 2 \, \underbrace{F(\xi(\varphi,\theta)) \cdot \hat r(\varphi,\theta)}_{\text{Componente radial}} + \frac{1}{\sen(\theta)} \frac{\partial}{\partial \theta}\left( \underbrace{F(\xi(\varphi,\theta)) \cdot \hat \theta(\varphi,\theta)}_{\text{Componente polar}} \sen(\theta) \right)\\ + \frac{1}{\sen(\theta)} \frac{\partial}{\partial \varphi}\left( \underbrace{F(\xi(\varphi,\theta)) \cdot \hat \varphi(\varphi,\theta)}_{\text{Componente azimutal}} \right),
+\end{multline}
+%
+donde $\hat r$, $\hat \theta$ y $\hat \varphi$ son los campos vectoriales unitarios asociados al sistema de coordenadas esféricas expresados como funciones de $\varphi$ y $\theta$; esto es,
+%
+\begin{equation*}
+\hat r(\varphi,\theta) = \begin{bmatrix} \cos(\varphi) \sen(\theta)\\ \sen(\varphi) \sen(\theta)\\ \cos(\theta) \end{bmatrix}, \quad
+\hat \theta(\varphi,\theta) = \begin{bmatrix} \cos(\varphi) \cos(\theta)\\ \sen(\varphi) \cos(\theta)\\ -\sen(\theta) \end{bmatrix}, \quad
+\hat \varphi(\varphi,\theta) = \begin{bmatrix} -\sen(\varphi)\\ \cos(\varphi)\\ 0 \end{bmatrix}.
+\end{equation*}
+%
 
 \section{La idea}
 
