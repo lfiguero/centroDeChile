@@ -21,11 +21,12 @@
 
 Si $p, q \in \mathbb{S}^2 \subset \mathbb{R}^3$ no son idénticos ni antipodales, existe un único gran círculo $C(p,q)$ sobre $\mathbb{S}^2$ que los conecta.
 La curva geodésica $\Gamma(p,q) \subset \mathbb{S}^2$ que conecta a $p$ y $q$ es la más corta de las dos curvas en las que $p$ y $q$ cortan a $C(p,q)$.
+Denotaremos el ángulo entre $p$ y$ q$ por $\angle(p,q) := \arccos(p\cdot q)$.
 
 \begin{proposition}\label{pro:param} La curva $\Gamma(p,q)$ admite la siguiente parametrización:
 %
 \begin{equation*}
-\Gamma(p,q) = \left\{ x(\zeta;p,q) = \cos(\zeta) \, p + \sen(\zeta) \, \frac{q - (p\cdot q)p}{\norm{q - (p\cdot q)p}} \mid \zeta \in [0, \arccos(p\cdot q)] \right\}.
+\Gamma(p,q) = \left\{ x(\zeta;p,q) = \cos(\zeta) \, p + \sen(\zeta) \, \frac{q - (p\cdot q)p}{\norm{q - (p\cdot q)p}} \mid \zeta \in [0, \angle(p,q)] \right\}.
 \end{equation*}
 %
 \begin{proof} Ejercicio.
@@ -44,128 +45,116 @@ Las siguientes fórmulas se obtienen inmediatamente:
 \end{gathered}
 \end{equation}
 
-Sean $p_0, p_1, \dotsc, p_{N-1}$ miembros de $\mathbb{S}^2$ tales que $p_i$ y $p_{i+1}$ no son idénticos ni antipodales para todo $i \in \{0, \dotsc, N-1\}$ (aquí y en lo que sigue usaremos la convención $p_N = p_0$) y sea $P$ una región encerrada por las curvas geodésicas $\Gamma(p_i, p_{i+1})$, $i \in \{0, \dotsc, N-1\}$, en sentido antihorario.
-Sea $\sigma$ la medida de superficie sobre $\mathbb{S}^2$, $l$ la medida lineal sobre $\partial_{\mathbb{S}^2} P$, que a su vez es la frontera de $P$ respecto a la topología de subespacio que $\mathbb{S}^2$ hereda de $\mathbb{R}^3$, $F \colon \mathbb{S}^2 \to \mathbb{R}^3$ una función suficientemente regular y $\nu_P \colon \partial_{\mathbb{S}^2} P \to \mathbb{R}^3$ el vector unitario que en para $l$-casi-todo punto de su dominio es normal y exterior a $P$ y tangente a $\mathbb{S}^2$.
-Entonces se cumple la siguiente variante del teorema de la divergencia:
+Denotaremos por $\sigma$ la medida de superficie sobre $\mathbb{S}^2$.
+
+\begin{proposition}\label{pro:sphereDiv}
+Sea $P \subset \mathbb{S}^2$ una región sobre la esfera de frontera (en la topología de subespacio) $\partial_P$ y sea $l$ la medida de línea sobre $\partial P$.
+Sea $\nu_P \colon \partial P \to \mathbb{R}^3$ una función a valores vectoriales que en $l$-casi todo punto de $\nu_P$ es normal y exterior a $P$ y tangente a $\mathbb{S}^2$.
+Sea $F \colon \mathbb{S}^2 \to \mathbb{R}^3$ una función lo suficientemente regular.
+Entonces,
 %
-\begin{equation}\label{manifoldDivergenceTheorem}
+\begin{equation}\label{sphereDiv}
 \int_P \operatorname{div}_{\mathbb{S}^2}(F(x)) \dd\sigma(x)
-= \int_{\partial_{\mathbb{S}^2} P} F(x) \cdot \nu_P(x) \dd l(x)
+= \int_{\partial P} F(x) \cdot \nu_P(x) \dd l(x),
 \end{equation}
 %
+donde
+%
+\begin{subequations}\label{sphereDivOp}
+\begin{equation}
+(\forall\,x\in\mathbb{S}^2) \quad \operatorname{div}_{\mathbb{S}^2}(F(x)) = \left.\operatorname{div}(\hat F)\right|_{\mathbb{S}^2}(x) - 2 \, F(x) \cdot x,
+\end{equation}
+%
+donde, a su vez, $\hat F \colon \mathbb{R}^3 \setminus \{0\} \to \mathbb{R}^3$ está definida por
+%
+\begin{equation}
+\hat F(x) = F\left(\frac{x}{\norm{x}}\right).
+\end{equation}
+\end{subequations}
+%
+\begin{proof}[Esbozo de la demostración]
+Aplicando el teorema de la divergencia convencional de $\mathbb{R}^3$ a la función $\hat F$ en la región $V = \{ x \in \mathbb{R}^3 \mid \norm{x}-1 \in (-\Delta R, \Delta R) \ \wedge\ x/\norm{x} \in P \}$, $\Delta R \in (0,1)$, obtenemos
+%
+\begin{multline*}
+\int_V \operatorname{div}(\hat F(x)) \dd x = \int_{\{r y \mid y \in \partial P \ \wedge \ r-1 \in (-\Delta R,\Delta R)\}} F\left(\frac{x}{\norm{x}}\right) \cdot \nu_P\left(\frac{x}{\norm{x}}\right) \dd S(x)\\ + \int_{(1+\Delta R) P} F\left(\frac{x}{\norm{x}}\right) \cdot \frac{x}{\norm{x}} \dd S(x) - \int_{(1-\Delta R) P} F\left(\frac{x}{\norm{x}}\right) \cdot \frac{x}{\norm{x}} \dd S(x),
+\end{multline*}
+%
+donde denotamos por $S$ a la medida de superficie genérica.
+Dividiendo ambos lados por $2 \Delta R$ y tomando el límite lateral $\Delta R \to 0_+$, obtenemos el resultado deseado.
+\end{proof}
+\end{proposition}
 
-La integral del lado derecho de \eqref{manifoldDivergenceTheorem} puede escribirse como la suma de las integrales correspondientes sobre $\Gamma(p_i, p_{i+1})$, $i \in \{0, \dotsc, N-1\}$.
+El operador $\operatorname{div}_{\mathbb{S}^2}$ puede expresarse mediante los ángulos polar $\theta$ y azimutal $\varphi$ de las coordenadas esféricas.
+Si $\xi(\theta,\varphi) = \left[ \cos(\varphi) \sen(\theta), \sen(\varphi) \sen(\theta), \cos(\theta) \right]^T$,
+%
+\begin{multline}
+\operatorname{div}_{\mathbb{S}^2} F(\xi(\varphi,\theta))
+= \frac{1}{\sen(\theta)} \frac{\partial}{\partial \theta}\left( \underbrace{F(\xi(\varphi,\theta)) \cdot \hat \theta(\varphi,\theta)}_{\text{Componente polar}} \sen(\theta) \right)\\ + \frac{1}{\sen(\theta)} \frac{\partial}{\partial \varphi}\left( \underbrace{F(\xi(\varphi,\theta)) \cdot \hat \varphi(\varphi,\theta)}_{\text{Componente azimutal}} \right),
+\end{multline}
+%
+donde $\hat r$, $\hat \theta$ y $\hat \varphi$ son los campos vectoriales unitarios asociados al sistema de coordenadas esféricas expresados como funciones de $\theta$ y $\varphi$; esto es,
+%
+\begin{equation*}
+\hat r(\theta,\varphi) = \begin{bmatrix} \cos(\varphi) \sen(\theta)\\ \sen(\varphi) \sen(\theta)\\ \cos(\theta) \end{bmatrix}, \quad
+\hat \theta(\theta,\varphi) = \begin{bmatrix} \cos(\varphi) \cos(\theta)\\ \sen(\varphi) \cos(\theta)\\ -\sen(\theta) \end{bmatrix}, \quad
+\hat \varphi(\theta,\varphi) = \begin{bmatrix} -\sen(\varphi)\\ \cos(\varphi)\\ 0 \end{bmatrix}.
+\end{equation*}
+%
+
+Sean $p_0, p_1, \dotsc, p_{N-1}$ miembros de $\mathbb{S}^2$ tales que $p_i$ y $p_{i+1}$ no son idénticos ni antipodales para todo $i \in \{0, \dotsc, N-1\}$ (aquí y en lo que sigue usaremos la convención $p_N = p_0$) y sea $P$ una región encerrada por las curvas geodésicas $\Gamma(p_i, p_{i+1})$, $i \in \{0, \dotsc, N-1\}$, en sentido antihorario.
+
+La integral del lado derecho de \eqref{sphereDiv} en la proposición \ref{pro:sphereDiv} puede en este caso escribirse como la suma de las integrales correspondientes sobre $\Gamma(p_i, p_{i+1})$, $i \in \{0, \dotsc, N-1\}$.
 Cada una de estas integrales, a su vez, mediante la parametrización dada en la proposición \ref{pro:param}, puede escribirse como
 %
 \begin{equation*}
-\int_0^{\arccos(p_i, p_{i+1})} F(x(\zeta;p_i,p_{i+1})) \cdot \nu_P(x(\zeta;p_i,p_{i+1})) \abs{\frac{\mathrm{d}}{\mathrm{d}\zeta} x(\zeta;p_i,p_{i+1})} \dd \zeta.
+\int_0^{\angle(p_i, p_{i+1})} F(x(\zeta;p_i,p_{i+1})) \cdot \nu_P(x(\zeta;p_i,p_{i+1})) \abs{\frac{\mathrm{d}}{\mathrm{d}\zeta} x(\zeta;p_i,p_{i+1})} \dd \zeta.
 \end{equation*}
 %
-Usando las fórmulas en \eqref{param-aux} obtenemos que $\nu_P(x(\zeta;p_i,p_{i+1}))$ es el producto cruz entre $\frac{\mathrm{d}}{\mathrm{d}\zeta} x(\zeta;p_i,p_{i+1})$ y $x(\zeta;p_i,p_{i+1})$ (informalmente, derecha es el producto cruz entre adelante y arriba) y así el lado derecho de \eqref{manifoldDivergenceTheorem} toma la forma
+Usando las fórmulas en \eqref{param-aux} obtenemos que $\nu_P(x(\zeta;p_i,p_{i+1}))$ es el producto cruz entre $\frac{\mathrm{d}}{\mathrm{d}\zeta} x(\zeta;p_i,p_{i+1})$ y $x(\zeta;p_i,p_{i+1})$ (informalmente, derecha es el producto cruz entre adelante y arriba) y así el lado derecho de \eqref{sphereDiv} toma la forma
 %
-\begin{equation*}
-\sum_{i=0}^{N-1} \int_0^{\arccos(p_i,p_{i+1})} F(x(\zeta;p_i,p_{i+1})) \dd \zeta \cdot \frac{p_{i+1} \times p_i}{\norm{p_{i+1} \times p_i}}
-\end{equation*}
+\begin{equation}\label{lineIntegralDecomposition}
+\sum_{i=0}^{N-1} \int_0^{\angle(p_i,p_{i+1})} F(x(\zeta;p_i,p_{i+1})) \dd \zeta \cdot \frac{p_{i+1} \times p_i}{\norm{p_{i+1} \times p_i}}
+\end{equation}
 %
 
-Por otro lado, $\operatorname{div}_{\mathbb{S}^2}(F)$ es sencillamente la divergencia convencional de $\mathbb{R}^3$ aplicada a $\mathbb{R}^3 \ni x \mapsto F(x/\norm{x}) \in \mathbb{R}^3$ y restringida a $\mathbb{S}^2$.
-Equivalentemente, si $\xi(\varphi,\theta) = \left[ \cos(\varphi) \sen(\theta), \sen(\varphi) \sen(\theta), \cos(\theta) \right]^T$,
+
+\subsection{Aplicación a integral de función uno}
+
+La función $F \colon \mathbb{S}^2 \to \mathbb{R}^3$ definida por $(\forall\,x\in\mathbb{S}^2)\ F(x) = [0, 0, x_3/(1-x_3^2)]^T$ satisface $\operatorname{div}_{\mathbb{S}^2} F = 1$.
+En este caso (abreviamos $\hat q = \frac{q - (p\cdot q)p}{\norm{q - (p\cdot q)p}}$),
 %
-\begin{multline}
-\operatorname{div}_{\mathbb{S}^2} F(\xi(\varphi,\theta))\\
-= 2 \, \underbrace{F(\xi(\varphi,\theta)) \cdot \hat r(\varphi,\theta)}_{\text{Componente radial}} + \frac{1}{\sen(\theta)} \frac{\partial}{\partial \theta}\left( \underbrace{F(\xi(\varphi,\theta)) \cdot \hat \theta(\varphi,\theta)}_{\text{Componente polar}} \sen(\theta) \right)\\ + \frac{1}{\sen(\theta)} \frac{\partial}{\partial \varphi}\left( \underbrace{F(\xi(\varphi,\theta)) \cdot \hat \varphi(\varphi,\theta)}_{\text{Componente azimutal}} \right),
+\begin{multline}\label{aux-1}
+\int_0^{\angle(p,q)} F(x(\zeta;p,q))_3 \dd \zeta
+= \int_0^{\angle(p,q)} \frac{x(\zeta;p,q)_3}{1-x(\zeta;p,q)_3^2} \dd\zeta\\
+= \int_0^{\angle(p,q)} \frac{\cos(\zeta) \, p_3 + \sen(\zeta) \, \hat q_3}{1 - \left(\cos(\zeta) \, p_3 + \sen(\zeta) \, \hat q_3\right)^2} \dd \zeta\\
+= \left. \frac{1}{\sqrt{1 - p_3^2 - \hat q_3^2}} \arctan\left( \frac{\sen(\zeta) \, p_3 - \cos(\zeta) \hat q_3}{\sqrt{1 - p_3^2 - \hat q_3^2}} \right) \right|_{\zeta=0}^{\zeta=\angle(p,q)}.
 \end{multline}
 %
-donde $\hat r$, $\hat \theta$ y $\hat \varphi$ son los campos vectoriales unitarios asociados al sistema de coordenadas esféricas expresados como funciones de $\varphi$ y $\theta$; esto es,
-%
-\begin{equation*}
-\hat r(\varphi,\theta) = \begin{bmatrix} \cos(\varphi) \sen(\theta)\\ \sen(\varphi) \sen(\theta)\\ \cos(\theta) \end{bmatrix}, \quad
-\hat \theta(\varphi,\theta) = \begin{bmatrix} \cos(\varphi) \cos(\theta)\\ \sen(\varphi) \cos(\theta)\\ -\sen(\theta) \end{bmatrix}, \quad
-\hat \varphi(\varphi,\theta) = \begin{bmatrix} -\sen(\varphi)\\ \cos(\varphi)\\ 0 \end{bmatrix}.
-\end{equation*}
-%
+Esta forma ya es útil para explotar \eqref{lineIntegralDecomposition}.
+Sin embargo, es mi sospecha que se puede simplificar aún más.
 
-\section{La idea}
-
-Sea $T$ un triángulo de vértices $(\varphi_0, \theta_0)$, $(\varphi_1, \theta_1)$, $(\varphi_2, \theta_2)$ dados en sentido antihorario; esto es,
+\subsection{Aplicación a integral de función primera coordenada cartesiana}
+La función $F \colon \mathbb{S}^2 \to \mathbb{R}^3$ definida por $(\forall\,x \in\mathbb{S}^2)\ F(x) = [-x_2^2, x_1\,x_2, 0]^T$ satisface $\operatorname{div}_{\mathbb{S}^2}(F)(x) = x_1$.
+En este caso las integrales de línea relevantes son (de nuevo abreviando $\hat q = \frac{q - (p\cdot q)p}{\norm{q - (p\cdot q)p}}$)
 %
-\begin{equation}\label{T}
-T = \left\{ \sum_{i=0}^2 t_i (\varphi_i, \theta_i) \mid 0 \leq t_0, t_1, t_2 \leq 1 \ \wedge \ t_0+t_1+t_2=1 \right\}.
-\end{equation}
-%
-
-Deseamos computar la integral\footnote{Omití el radio del planeta Tierra al cuadrado y la densidad de población de la comuna a la que $T$ está asociado para no sobrecargar la notación}
-%
-\begin{equation}\label{I1}
-I_{T,x} := \int_T x(\varphi, \theta) \, \dd S(\varphi, \theta),
-\end{equation}
-%
-donde $x(\varphi,\theta) = \cos(\varphi) \sen(\theta)$ y $\dd S(\varphi, \theta) = \sen(\theta) \dd(\varphi,\theta)$\footnote{Esto corresponde a la integral de la primera coordenada cartesiana sobre la región sobre la superficie de la esfera que sale de aplicar a $T$ la transformación $(\varphi, \theta) \mapsto (\cos(\varphi) \sen(\theta), \sen(\varphi) \sen(\theta), \cos(\theta))$ (notar que esto implica que la variable $\theta$ corresponde a una colatitud y que los segmentos de la frontera de $T$ no son mapeados a curvas geodésicas sobre la esfera).}.
-Por lo tanto,
-%
-\begin{equation}\label{I2}
-I_{T,x} := \int_T \cos(\varphi) \sen(\theta)^2 \dd(\varphi, \theta).
-\end{equation}
-%
-Para evitar calcular integrales bidimensionales explícitamente, podemos aplicar el teorema de la divergencia a \eqref{I2} si conseguimos identificar una antidivergencia del integrando.
-Importantemente, el operador divergencia que corresponde es el cartesiano\footnote{Informalmente uno diría que $T$ es lo que sale después de pasarle la aplanadora a la región correspondiente sobre la superficie de la esfera; matemáticamente el fondo del asunto es que en \eqref{I2} aparece la medida de Lebesgue convencional.} respecto a las coordenadas $(\varphi, \theta)$.
-Jugando con Mathematica encontré que la función vectorial $F$ definida por
-%
-\begin{equation}\label{F}
-F(\varphi, \theta) = \frac{1}{10}\begin{bmatrix}
-\sen(\varphi) \left( 5 - \cos(2\theta) \right)\\[2ex]
--2 \cos(\varphi) \sen(2\theta)
-\end{bmatrix}
-\end{equation}
-%
-satisface
-%
-\begin{equation*}
-\operatorname{div}(F)(\varphi,\theta)
-= \frac{\partial F_1(\varphi, \theta)}{\partial \varphi} + \frac{\partial F_2(\varphi, \theta)}{\partial \theta}
-= \cos(\varphi) \sen(\theta)^2.
-\end{equation*}
-%
-Por lo tanto,
-%
-\begin{equation}\label{I3}
-I_{T,x} = \int_{\partial T} F(\varphi, \theta) \cdot \nu_T(\varphi,\theta) \dd l(\varphi, \theta)
-= \sum_{i=0}^2 \int_{E_i} F(\varphi, \theta) \cdot \nu_T(\varphi,\theta) \dd l(\varphi, \theta),
-\end{equation}
-%
-donde $\nu_T$ es el vector unitario exterior normal a $T$ definido sobre $\partial T$, $l$ es la medida lineal sobre $\partial T$ y para cada $i \in \{0, 1, 2\}$, $E_i$ es el segmento que une a $(\varphi_i, \theta_i)$ con $(\varphi_{i+1}, \theta_{i+1})$, donde por supuesto los subíndices se interpretan módulo $3$; esto es,
-%
-\begin{equation}\label{Ei}
-(\forall\,i\in\{0,1,2\}) \quad E_i = \left\{ (1-s) (\varphi_i, \theta_i) + s (\varphi_{i+1}, \theta_{i+1}) \mid 0 \leq s \leq 1 \right\}.
-\end{equation}
-%
-Ahora, usando la parametrización de $E_i$ sugerida por \eqref{Ei}, las últimas integrales en \eqref{I3} se pueden escribir en la forma
-%
-\begin{multline}\label{lineIntegrals}
-\int_{E_i} F(\varphi, \theta) \cdot \nu_T(\varphi,\theta) \dd l(\varphi, \theta)\\
-= \int_0^1 F\big( (1-s) (\varphi_i, \theta_i) + s (\varphi_{i+1}, \theta_{i+1}) \big) \cdot \left[ \frac{1}{\abs{E_i}} \begin{bmatrix} 0 & 1\\-1 & 0\end{bmatrix} \begin{bmatrix} \varphi_{i+1}-\varphi_i \\ \theta_{i+1} - \theta_i \end{bmatrix} \right] \abs{E_i} \dd s\\
-= \int_0^1 F\big( (1-s) (\varphi_i, \theta_i) + s (\varphi_{i+1}, \theta_{i+1}) \big) \cdot \begin{bmatrix} \theta_{i+1}-\theta_i\\ -(\varphi_{i+1} - \varphi_i) \end{bmatrix} \dd s.
+\begin{multline}\label{aux-x1-1}
+\int_0^{\angle(p,q)} F(x(\zeta;p,q))_1 \dd \zeta
+= \int_0^{\angle(p,q)} -x(\zeta;p,q)_2^2 \dd \zeta\\
+= -\int_0^{\angle(p,q)} \left( \cos(\zeta) \, p_2 + \sin(\zeta) \hat q_2 \right)^2 \dd \zeta
 \end{multline}
 %
-La última forma de la integral puede muy fácilmente ser alimentada a las excelentes rutinas de integración unidimensional que existen para Python, etc.
-
-\section{Posibles refinamientos}
-
-\begin{itemize}[leftmargin=*]
-\item La última integral de \eqref{lineIntegrals} se puede calcular en forma analítica también.
-Quizás efectuando la suma en \eqref{I3} de las expresiones resultantes se obtenga algo relativamente sencillo.
-\item Para calcular las integrales
+y
 %
-\begin{equation*}
-I_{T,y} := \int_T y(\varphi, \theta) \, \dd S(\varphi, \theta)
-\quad\text{y}\quad
-I_{T,z} := \int_T z(\varphi, \theta) \, \dd S(\varphi, \theta),
-\end{equation*}
+\begin{multline}\label{aux-x1-2}
+\int_0^{\angle(p,q)} F(x(\zeta;p,q))_2 \dd \zeta
+= \int_0^{\angle(p,q)} x(\zeta;p,q)_1 x(\zeta;p,q)_2 \dd \zeta\\
+= \int_0^{\angle(p,q)} \left( \cos(\zeta) \, p_1 + \sin(\zeta) \hat q_1 \right) \left( \cos(\zeta) \, p_2 + \sin(\zeta) \hat q_2 \right) \dd \zeta,
+\end{multline}
 %
-donde $y(\varphi, \theta) = \sen(\varphi) \sen(\theta)$ y $z(\varphi, \theta) = \cos(\theta)$, probablemente no sea difícil hallar antidivergencias de los integrandos directamente o adaptando la antidivergencia $F$ dada en \eqref{F}.
-\item Alternativamente uno podría tratar de expresar $I_{T,y}$ como $I_{Q(T),x}$, donde $Q$ es una rotación adecuada (similarmente para $I_{T,z}$).
-\item \textbf{[Especulatorio]} ¿Qué hay si $T$, en vez de un triángulo, fuese la imagen por la transformación cartesiano-a-esférico de un verdadero triángulo esférico (uno donde los vértices son conectados por curvas geodésicas)?
-\item \textbf{[Especulatorio]} ¿Habría alguna simplificación si usásemos teoremas de la divergencia especializados a regiones sobre superficies directamente sobre regiones sobre la esfera?
-\end{itemize}
+que se pueden calcular sin dificultad para ser usadas en \eqref{lineIntegralDecomposition}.
+
+\subsection{Otras coordenadas cartesianas}
+
+Como la imagen a través de una rotación de una curva geodésica también es una curva geodésica, una rutina que calcule la integral de la función $\mathbb{S}^3 \ni x \mapsto x_1 \in \mathbb{R}$ en un polígono definido por curvas geodésicas puede ser combinada con rotaciones adecuadas para inmediatamente producir las rutinas correspondientes a las funciones $\mathbb{S}^3 \ni x \mapsto x_2 \in \mathbb{R}$ y $\mathbb{S}^3 \ni x \mapsto x_3 \in \mathbb{R}$.
 
 \end{document}
