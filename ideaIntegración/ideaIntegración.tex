@@ -22,13 +22,14 @@
 
 Si $p, q \in \mathbb{S}^2 \subset \mathbb{R}^3$ no son idénticos ni antipodales, existe un único gran círculo $C(p,q)$ sobre $\mathbb{S}^2$ que los conecta.
 La curva geodésica $\Gamma(p,q) \subset \mathbb{S}^2$ que conecta a $p$ y $q$ es la más corta de las dos curvas en las que $p$ y $q$ cortan a $C(p,q)$.
-Denotaremos el ángulo entre $p$ y$ q$ por $\angle(p,q) := \arccos(p\cdot q)$.
+Denotaremos el ángulo entre $p$ y $ q$ por $\angle(p,q) := \arccos(p\cdot q)$.
+Así, $\cos(\angle(p,q)) = p\cdot q$ y $\sen(\angle(p,q)) = \sqrt{1-(p\cdot q)^2}$.
 
 \begin{proposition}\label{pro:param} La curva $\Gamma(p,q)$ admite la siguiente parametrización:
 %
-\begin{equation*}
-\Gamma(p,q) = \left\{ x(\zeta;p,q) = \cos(\zeta) \, p + \sen(\zeta) \, \frac{q - (p\cdot q)p}{\norm{q - (p\cdot q)p}} \mid \zeta \in [0, \angle(p,q)] \right\}.
-\end{equation*}
+\begin{multline*}
+\Gamma(p,q) = \bigg\{ x(\zeta;p,q) = \cos(\zeta) \, p + \sen(\zeta) \, \frac{q - (p\cdot q)p}{\norm{q - (p\cdot q)p}}\\ = \frac{\sen(\angle(p,q) - \zeta) \, p + \sen(\zeta) \, q}{\sen(\angle(p,q))} \ \bigg| \ \zeta \in [0, \angle(p,q)] \bigg\}.
+\end{multline*}
 %
 \begin{proof} Ejercicio.
 \end{proof}
