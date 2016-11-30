@@ -9,6 +9,7 @@
 \newcommand{\dd}[1][y]{\if#1y\,\fi{\mathrm d}} % Differential
 \newcommand{\norm}[2][y]{\if#1y\left\fi\lVert#2\if#1y\right\fi\rVert} % Norm
 \newcommand{\abs}[2][y]{\if#1y\left\fi\lvert#2\if#1y\right\fi\rvert} % Absolute value
+\newcommand{\psp}[1]{\sp{(#1)}} % Parenthesized superscript
 
 \newtheorem{thm}{Teorema}
 \newtheorem{proposition}[thm]{Proposición}
@@ -101,19 +102,20 @@ donde $\hat r$, $\hat \theta$ y $\hat \varphi$ son los campos vectoriales unitar
 \end{equation*}
 %
 
-Sean $p_0, p_1, \dotsc, p_{N-1}$ miembros de $\mathbb{S}^2$ tales que $p_i$ y $p_{i+1}$ no son idénticos ni antipodales para todo $i \in \{0, \dotsc, N-1\}$ (aquí y en lo que sigue usaremos la convención $p_N = p_0$) y sea $P$ una región encerrada por las curvas geodésicas $\Gamma(p_i, p_{i+1})$, $i \in \{0, \dotsc, N-1\}$, en sentido antihorario.
+Sean $p\psp{0}, p\psp{1}, \dotsc, p\psp{N-1}$ miembros de $\mathbb{S}^2$ tales que $p\psp{i}$ y $p\psp{i+1}$ no son idénticos ni antipodales para todo $i \in \{0, \dotsc, N-1\}$ (aquí y en lo que sigue usaremos la convención $p\psp{N} = p\psp{0}$) y sea $P$ una región encerrada por las curvas geodésicas $\Gamma(p\psp{i}, p\psp{i+1})$, $i \in \{0, \dotsc, N-1\}$, en sentido antihorario.
 
-La integral del lado derecho de \eqref{sphereDiv} en la proposición \ref{pro:sphereDiv} puede en este caso escribirse como la suma de las integrales correspondientes sobre $\Gamma(p_i, p_{i+1})$, $i \in \{0, \dotsc, N-1\}$.
+La integral del lado derecho de \eqref{sphereDiv} en la proposición \ref{pro:sphereDiv} puede en este caso escribirse como la suma de las integrales correspondientes sobre $\Gamma(p\psp{i}, p\psp{i+1})$, $i \in \{0, \dotsc, N-1\}$.
 Cada una de estas integrales, a su vez, mediante la parametrización dada en la proposición \ref{pro:param}, puede escribirse como
 %
 \begin{equation*}
-\int_0^{\angle(p_i, p_{i+1})} F(x(\zeta;p_i,p_{i+1})) \cdot \nu_P(x(\zeta;p_i,p_{i+1})) \abs{\frac{\mathrm{d}}{\mathrm{d}\zeta} x(\zeta;p_i,p_{i+1})} \dd \zeta.
+\int_0^{\angle(p\psp{i}, p\psp{i+1})} F(x(\zeta;p\psp{i},p\psp{i+1})) \cdot \nu_P(x(\zeta;p\psp{i},p\psp{i+1})) \abs{\frac{\mathrm{d}}{\mathrm{d}\zeta} x(\zeta;p\psp{i},p\psp{i+1})} \dd \zeta.
 \end{equation*}
 %
-Usando las fórmulas en \eqref{param-aux} obtenemos que $\nu_P(x(\zeta;p_i,p_{i+1}))$ es el producto cruz entre $\frac{\mathrm{d}}{\mathrm{d}\zeta} x(\zeta;p_i,p_{i+1})$ y $x(\zeta;p_i,p_{i+1})$ (informalmente, derecha es el producto cruz entre adelante y arriba) y así el lado derecho de \eqref{sphereDiv} toma la forma
+Usando las fórmulas en \eqref{param-aux} obtenemos que $\nu_P(x(\zeta;p\psp{i},p\psp{i+1}))$ es el producto cruz entre $\frac{\mathrm{d}}{\mathrm{d}\zeta} x(\zeta;p\psp{i},p\psp{i+1})$ y $x(\zeta;p\psp{i},p\psp{i+1})$ (informalmente, derecha es el producto cruz entre adelante y arriba) y así \eqref{sphereDiv} se particulariza a
 %
 \begin{equation}\label{lineIntegralDecomposition}
-\sum_{i=0}^{N-1} \int_0^{\angle(p_i,p_{i+1})} F(x(\zeta;p_i,p_{i+1})) \dd \zeta \cdot \frac{p_{i+1} \times p_i}{\norm{p_{i+1} \times p_i}}
+\int_P \operatorname{div}_{\mathbb{S}^2} F(x)) \dd\sigma(x)
+= \sum_{i=0}^{N-1} \int_0^{\angle(p\psp{i},p\psp{i+1})} F(x(\zeta;p\psp{i},p\psp{i+1})) \dd \zeta \cdot \frac{p\psp{i+1} \times p\psp{i}}{\norm{p\psp{i+1} \times p\psp{i}}}.
 \end{equation}
 %
 
