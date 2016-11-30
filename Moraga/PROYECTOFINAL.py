@@ -49,11 +49,11 @@ def Areap(Pi,Pi1,Ti,Ti1):
 # Código principal
 sf = shapefile.Reader("division_comunal")
 ncomunas = 346
-R=6371000
-IX=0
-IY=0
-IZ=0
-POBLA=0
+R = 6371000.0
+IX = 0.0
+IY = 0.0
+IZ = 0.0
+POBLA = 0.0
 # Cómputos geográficos preliminares
 inputEPSG = 32719
 outputEPSG = 4326
@@ -74,6 +74,7 @@ for j, comuna in enumerate(sf.shapeRecords()):
     inicioPartes = comuna.shape.parts
     puntos = numpy.array(comuna.shape.points)
     psp = separarPartes(puntos, inicioPartes)
+    # Ciclo por polígonos
     for k in range(0,len(psp)):
         for i in range(0,len(psp[k])):
              pointX = psp[k][i,0]
@@ -83,47 +84,36 @@ for j, comuna in enumerate(sf.shapeRecords()):
              point.AddPoint(pointX, pointY)
              # transform point
              point.Transform(coordTransform)
-             # print point in EPSG 4326
-#PRUEBA
-             RADy=(point.GetX())*pi/180        #ANGULO LONGITUD (PHI)
-             RADx=-((point.GetY()*pi/180)+pi/2)#ANGULO CO-LATITUD (THETA)
-             psp[k][i,0]=RADy # PHI
-             psp[k][i,1]=RADx # THETA
+             # Sobreescribimos con nuevas coordenadas
+             psp[k][i,0] = (point.GetX())*pi/180 # Ángulo azimutal (φ)
+             psp[k][i,1] = -((point.GetY()*pi/180)+pi/2) # Ángulo polar/colatitud (θ)
         #zona poligonal en coordenadas lat/long
-        AREAi=0
-        INTxi=0
-        INTyi=0
-        INTzi=0
+        AREAi = 0.0
+        INTxi = 0.0
+        INTyi = 0.0
+        INTzi = 0.0
+        # Ciclo por segmentos
         for i in range(0,len(psp[k])-1):
-            Pi=psp[k][i,0]     # PHI
-            Pi1=psp[k][i+1,0]  
-            Ti=psp[k][i,1]     # THETA
-            Ti1=psp[k][i+1,1]
-            IIX=Ix(Pi,Pi1,Ti,Ti1)
-            IIY=Iy(Pi,Pi1,Ti,Ti1)
-            IIZ=Iz(Pi,Pi1,Ti,Ti1)
-            A=Areap(Pi,Pi1,Ti,Ti1)
-            AREAi=AREAi+A
-            INTxi=INTxi+IIX
-            INTyi=INTyi+IIY
-            INTzi=INTzi+IIZ
+            #                φ[i]            φ[i+1]        θ[i]          θ[i+1]
+            #                  ↓               ↓            ↓              ↓ 
+            AREAi += Areap(psp[k][i,0], psp[k][i+1,0], psp[k][i,1], psp[k][i+1,1])
+            INTxi += Ix(psp[k][i,0], psp[k][i+1,0], psp[k][i,1], psp[k][i+1,1])
+            INTyi += Iy(psp[k][i,0], psp[k][i+1,0], psp[k][i,1], psp[k][i+1,1])
+            INTzi += Iz(psp[k][i,0], psp[k][i+1,0], psp[k][i,1], psp[k][i+1,1])
         INTpspx[j] += INTxi
         INTpspy[j] += INTyi
         INTpspz[j] += INTzi
         AREApsp[j] += AREAi
     Densicomunal=H[j]/AREApsp[j]
-    ICX=Densicomunal*R*INTpspx[j]
-    ICy=Densicomunal*R*INTpspy[j]
-    ICz=Densicomunal*R*INTpspz[j]
-    IX=IX+ICX
-    IY=IY+ICy
-    IZ=IZ+ICz
-    POBLA=POBLA+H[j]
+    IX += Densicomunal*R*INTpspx[j]
+    IY += Densicomunal*R*INTpspy[j]
+    IZ += Densicomunal*R*INTpspz[j]
+    POBLA += H[j]
 #COORDENADAS EN X Y Z
-X=IX/POBLA
-Y=IY/POBLA
-Z=IZ/POBLA
-THETA=(arctan(sqrt(X*X+Y*Y)/Z))*180/pi-90    #ANGULO EN Latitud
-PHI=((arctan(Y/X))*180/pi)        #ANGULO EN Longitud
+X = IX/POBLA
+Y = IY/POBLA
+Z = IZ/POBLA
+THETA = (arctan(sqrt(X*X+Y*Y)/Z))*180/pi-90 # Latitud en grados
+PHI = ((arctan(Y/X))*180/pi) # Longitud en grados
 print("LON",PHI)
 print("LAT",THETA)
