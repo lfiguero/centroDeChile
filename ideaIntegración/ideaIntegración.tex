@@ -136,24 +136,23 @@ Esta forma ya es útil para explotar \eqref{lineIntegralDecomposition}.
 Sin embargo, es mi sospecha que se puede simplificar aún más.
 
 \subsection{Aplicación a integral de función primera coordenada cartesiana}
-La función $F \colon \mathbb{S}^2 \to \mathbb{R}^3$ definida por $(\forall\,x \in\mathbb{S}^2)\ F(x) = [-x_2^2, x_1\,x_2, 0]^T$ satisface $\operatorname{div}_{\mathbb{S}^2}(F)(x) = x_1$.
-En este caso las integrales de línea relevantes son (de nuevo abreviando $\hat q = \frac{q - (p\cdot q)p}{\norm{q - (p\cdot q)p}}$)
+La función $F \colon \mathbb{S}^2 \to \mathbb{R}^3$ definida por $(\forall\,x \in\mathbb{S}^2)\ F(x) = [-1/2,0,0]^T$ (¡constante!) satisface $\operatorname{div}_{\mathbb{S}^2}(F)(x) = x_1$.
+En este caso,
 %
-\begin{multline}\label{aux-x1-1}
-\int_0^{\angle(p,q)} F(x(\zeta;p,q))_1 \dd \zeta
-= \int_0^{\angle(p,q)} -x(\zeta;p,q)_2^2 \dd \zeta\\
-= -\int_0^{\angle(p,q)} \left( \cos(\zeta) \, p_2 + \sin(\zeta) \hat q_2 \right)^2 \dd \zeta
-\end{multline}
+\begin{equation*}
+\int_0^{\angle(p,q)} F(x(\zeta;p,q)) \dd \zeta
+=\int_0^{\angle(p,q)} \begin{bmatrix} -1/2 \\ 0 \\ 0 \end{bmatrix} \dd \zeta
+= \begin{bmatrix} -\angle(p,q)/2 \\ 0 \\ 0 \end{bmatrix}.
+\end{equation*}
 %
-y
+Por lo tanto, por \eqref{lineIntegralDecomposition}
 %
-\begin{multline}\label{aux-x1-2}
-\int_0^{\angle(p,q)} F(x(\zeta;p,q))_2 \dd \zeta
-= \int_0^{\angle(p,q)} x(\zeta;p,q)_1 x(\zeta;p,q)_2 \dd \zeta\\
-= \int_0^{\angle(p,q)} \left( \cos(\zeta) \, p_1 + \sin(\zeta) \hat q_1 \right) \left( \cos(\zeta) \, p_2 + \sin(\zeta) \hat q_2 \right) \dd \zeta,
-\end{multline}
-%
-que se pueden calcular sin dificultad para ser usadas en \eqref{lineIntegralDecomposition}.
+\begin{equation*}
+\begin{split}
+\int_P x_1 \dd \sigma(x) & = -\frac{1}{2} \sum_{i=0}^{N-1} \angle(p\psp{i},p\psp{i+1}) \frac{(p\psp{i+1} \times p\psp{i})_1}{\norm{p\psp{i+1} \times p\psp{i}}}\\
+& = \frac{1}{2} \sum_{i=0}^{N-1} \frac{\angle(p\psp{i},p\psp{i+1})}{\sqrt{1-(p\psp{i} \cdot p\psp{i+1})^2}} (p\psp{i+1}_3 p\psp{i}_2 - p\psp{i+1}_2 p\psp{i}_3).
+\end{split}
+\end{equation*}
 
 \subsection{Otras coordenadas cartesianas}
 
