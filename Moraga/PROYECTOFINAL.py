@@ -64,10 +64,10 @@ outSpatialRef = osr.SpatialReference()
 outSpatialRef.ImportFromEPSG(outputEPSG)
 coordTransform = osr.CoordinateTransformation(inSpatialRef, outSpatialRef)
 # Alocación de memoria para integrales sobre comunas
-INTpspx = numpy.zeros(ncomunas)
-INTpspy = numpy.zeros(ncomunas)
-INTpspz = numpy.zeros(ncomunas)
-AREApsp = numpy.zeros(ncomunas)
+intComX = numpy.zeros(ncomunas)
+intComY = numpy.zeros(ncomunas)
+intComZ = numpy.zeros(ncomunas)
+intCom1 = numpy.zeros(ncomunas)
 # Ciclo por comunas
 for j, comuna in enumerate(tqdm(sf.shapeRecords())):
     nombre = comuna.record[2]
@@ -77,6 +77,7 @@ for j, comuna in enumerate(tqdm(sf.shapeRecords())):
     psp = separarPartes(puntos, inicioPartes)
     # Ciclo por polígonos
     for k in range(0,len(psp)):
+        # Ciclo por vértices
         for i in range(0,len(psp[k])):
              pointX = psp[k][i,0]
              pointY = psp[k][i,1]
@@ -88,27 +89,26 @@ for j, comuna in enumerate(tqdm(sf.shapeRecords())):
              # Sobreescribimos con nuevas coordenadas
              psp[k][i,0] = (point.GetX())*pi/180 # Ángulo azimutal (φ)
              psp[k][i,1] = -((point.GetY()*pi/180)+pi/2) # Ángulo polar/colatitud (θ)
-        #zona poligonal en coordenadas lat/long
-        AREAi = 0.0
-        INTxi = 0.0
-        INTyi = 0.0
-        INTzi = 0.0
+        AREAk = 0.0
+        INTxk = 0.0
+        INTyk = 0.0
+        INTzk = 0.0
         # Ciclo por segmentos
         for i in range(0,len(psp[k])-1):
             #                φ[i]            φ[i+1]        θ[i]          θ[i+1]
             #                  ↓               ↓            ↓              ↓ 
-            AREAi += Areap(psp[k][i,0], psp[k][i+1,0], psp[k][i,1], psp[k][i+1,1])
-            INTxi += Ix(psp[k][i,0], psp[k][i+1,0], psp[k][i,1], psp[k][i+1,1])
-            INTyi += Iy(psp[k][i,0], psp[k][i+1,0], psp[k][i,1], psp[k][i+1,1])
-            INTzi += Iz(psp[k][i,0], psp[k][i+1,0], psp[k][i,1], psp[k][i+1,1])
-        INTpspx[j] += INTxi
-        INTpspy[j] += INTyi
-        INTpspz[j] += INTzi
-        AREApsp[j] += AREAi
-    Densicomunal=H[j]/AREApsp[j]
-    IX += Densicomunal*R*INTpspx[j]
-    IY += Densicomunal*R*INTpspy[j]
-    IZ += Densicomunal*R*INTpspz[j]
+            AREAk += Areap(psp[k][i,0], psp[k][i+1,0], psp[k][i,1], psp[k][i+1,1])
+            INTxk += Ix(psp[k][i,0], psp[k][i+1,0], psp[k][i,1], psp[k][i+1,1])
+            INTyk += Iy(psp[k][i,0], psp[k][i+1,0], psp[k][i,1], psp[k][i+1,1])
+            INTzk += Iz(psp[k][i,0], psp[k][i+1,0], psp[k][i,1], psp[k][i+1,1])
+        intComX[j] += INTxk
+        intComY[j] += INTyk
+        intComZ[j] += INTzk
+        intCom1[j] += AREAk
+    Densicomunal=H[j]/intCom1[j]
+    IX += Densicomunal*R*intComX[j]
+    IY += Densicomunal*R*intComY[j]
+    IZ += Densicomunal*R*intComZ[j]
     POBLA += H[j]
 #COORDENADAS EN X Y Z
 X = IX/POBLA
