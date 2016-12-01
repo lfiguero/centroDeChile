@@ -4,6 +4,7 @@ import numpy
 import matplotlib.pyplot as plt
 import ogr, osr # Paquetes que vienen con GDAL
 from scipy import integrate, cos, sin, pi, arctan, sqrt
+from tqdm import tqdm # Barra de progreso para ciclos largos
 from H import H # Esto está en H.py
 
 # Este código debe ejecutarse en el mismo directorio donde están
@@ -68,7 +69,7 @@ INTpspy = numpy.zeros(ncomunas)
 INTpspz = numpy.zeros(ncomunas)
 AREApsp = numpy.zeros(ncomunas)
 # Ciclo por comunas
-for j, comuna in enumerate(sf.shapeRecords()):
+for j, comuna in enumerate(tqdm(sf.shapeRecords())):
     nombre = comuna.record[2]
     cods = comuna.record[6]
     inicioPartes = comuna.shape.parts
