@@ -3,7 +3,7 @@ import shapefile
 import numpy
 import matplotlib.pyplot as plt
 import ogr, osr # Paquetes que vienen con GDAL
-from scipy import integrate, cos, sin, pi, arctan, sqrt
+from scipy import integrate, cos, sin, pi, arctan, arctan2, sqrt
 from tqdm import tqdm # Barra de progreso para ciclos largos
 from H import H # Esto está en H.py
 
@@ -23,6 +23,31 @@ def separarPartes(puntos, inicioPartes):
             puntos_parte_k = puntos[inicioPartes[k]:, :]
         salida.append(puntos_parte_k)
     return salida
+
+# Funciones que transforman entre longitud-latitud (grados) y
+# ángulo azimutal-ángulo polar/colatitud (radianes)
+def lonlat2phitheta(lon, lat):
+    phi = lon*pi/180.0
+    theta = pi/2.0 - lat*pi/180.0
+    return phi, theta
+def phitheta2lonlat(phi, theta):
+    lon = phi*180.0/pi
+    lat = 90.0 - theta*180.0/pi
+    return lon, lat
+# Funciones que transforman entre coordenadas cartesianas y coordenadas
+# esféricas (en el orden radio, ángulo azimutal, ángulo polar/colatitud)
+def cart2sph(x, y, z):
+    r = sqrt(x**2 + y**2 + z**2)
+    theta = arctan2(sqrt(x**2+y**2), z)
+    phi = arctan2(y, x)
+    return r, theta, phi
+def sph2cart(r, theta, phi):
+    x = r*cos(phi)*sin(theta)
+    y = r*sin(phi)*sin(theta)
+    z = r*cos(theta)
+    return x, y, z
+
+
 #Funciones integrales
 def Ix(Pi,Pi1,Ti,Ti1):
     F= lambda s: -(cos(Ti - s*(Ti - Ti1)))*(cos(Ti - s*(Ti - Ti1)))*sin(Pi - s*(Pi - Pi1))*(Ti - Ti1)
@@ -88,9 +113,10 @@ for j, comuna in enumerate(tqdm(sf.shapeRecords())):
              point.AddPoint(pointX, pointY)
              # transform point
              point.Transform(coordTransform)
-             # Sobreescribimos con nuevas coordenadas
-             psp[j][k][i,0] = (point.GetX())*pi/180 # Ángulo azimutal (φ)
-             psp[j][k][i,1] = -((point.GetY()*pi/180)+pi/2) # Ángulo polar/colatitud (θ)
+             # Sobreescribimos con nuevas coordenadas: De longitud-latitud a
+             # ángulo azimutal (φ)-ángulo polar/colatitud (θ)
+             psp[j][k][i,0], psp[j][k][i,1] = \
+                     lonlat2phitheta(point.GetX(), point.GetY())
         AREAk = 0.0
         INTxk = 0.0
         INTyk = 0.0
@@ -116,7 +142,7 @@ for j, comuna in enumerate(tqdm(sf.shapeRecords())):
 X = IX/POBLA
 Y = IY/POBLA
 Z = IZ/POBLA
-THETA = (arctan(sqrt(X*X+Y*Y)/Z))*180/pi-90 # Latitud en grados
-PHI = ((arctan(Y/X))*180/pi) # Longitud en grados
-print("LON",PHI)
-print("LAT",THETA)
+R, THETA, PHI = cart2sph(X, Y, Z)
+LON, LAT = phitheta2lonlat(PHI, THETA)
+print("LON", LON)
+print("LAT", LAT)
