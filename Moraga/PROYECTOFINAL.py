@@ -50,7 +50,7 @@ def sph2cart(r, theta, phi):
 
 #Funciones integrales
 def Ix(Pi,Pi1,Ti,Ti1):
-    F= lambda s: -(cos(Ti - s*(Ti - Ti1)))*(cos(Ti - s*(Ti - Ti1)))*sin(Pi - s*(Pi - Pi1))*(Ti - Ti1)
+    F= lambda s: -(sin(Ti - s*(Ti - Ti1)))*(sin(Ti - s*(Ti - Ti1)))*sin(Pi - s*(Pi - Pi1))*(Ti - Ti1)
     I=integrate.quad(F,0,1)
     I=-I[0]
     return I
