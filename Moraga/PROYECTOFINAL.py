@@ -156,7 +156,7 @@ for j in range(ncomunas):
         plt.plot(psp[j][k][:,0], psp[j][k][:,1])
     rcom, thetacom, phicom = cart2sph(intComX[j]/intCom1[j], intComY[j]/intCom1[j], intComZ[j]/intCom1[j])
     plt.plot(phicom, thetacom, "*r")
-    # Como ángulo polar crece de norte a sur, esta operación hace que las
+    # Como el ángulo polar crece de norte a sur, esta operación hace que las
     # figuras resultantes se vean más familiares
     plt.gca().invert_yaxis()
     plt.xlabel(u"Ángulo azimutal ($\\varphi$)")
