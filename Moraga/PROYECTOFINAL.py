@@ -93,11 +93,12 @@ intComX = numpy.zeros(ncomunas)
 intComY = numpy.zeros(ncomunas)
 intComZ = numpy.zeros(ncomunas)
 intCom1 = numpy.zeros(ncomunas)
-# Variable para contener las geometrías de las comunas
+# Variables persistentes para contener geometrías y otros datos de las comunas
 psp = [None]*ncomunas
+nombre = [None]*ncomunas
 # Ciclo por comunas
 for j, comuna in enumerate(tqdm(sf.shapeRecords())):
-    nombre = comuna.record[2]
+    nombre[j] = comuna.record[2]
     cods = comuna.record[6]
     inicioPartes = comuna.shape.parts
     puntos = numpy.array(comuna.shape.points)
@@ -146,3 +147,14 @@ R, THETA, PHI = cart2sph(X, Y, Z)
 LON, LAT = phitheta2lonlat(PHI, THETA)
 print("LON", LON)
 print("LAT", LAT)
+
+# Diagnósticos
+for j in range(ncomunas):
+    plt.figure()
+    plt.title(nombre[j].decode('latin-1'))
+    for k in range(len(psp[j])):
+        plt.plot(psp[j][k][:,0], psp[j][k][:,1])
+    rcom, thetacom, phicom = cart2sph(intComX[j]/intCom1[j], intComY[j]/intCom1[j], intComZ[j]/intCom1[j])
+    plt.plot(phicom, thetacom, "*r")
+    plt.savefig("FiguraCentroDeMasaComunal" + ("%03d" % j) + ".png")
+    plt.close()
