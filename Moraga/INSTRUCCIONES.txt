@@ -1,7 +1,1 @@
-Para usar el programa PROYECTOFINAL.py:
---------------------------------------------------------------------------
-1) Abrir python 2.17.
-2) Copiar y pegar la variable H que está en H.txt. Esta variable tiene los
-pesos de cada comuna ordenados según division_comunal.
-3) Ejecutar el programa.
---------------------------------------------------------------------------
+El programa PROYECTOFINAL.py se debe ejecutar en Python.
